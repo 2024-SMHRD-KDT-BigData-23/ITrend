@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smhrd.gradle.mapper.MemberMapper">
+	
+	<select id="findByUseridandpw" resultType="com.smhrd.gradle.vo.Member">
+        SELECT * FROM t_user
+        WHERE user_id = #{user_id} AND user_pw = #{user_pw}
+    </select>
+    
+	<insert id="signupMember" parameterType="com.smhrd.gradle.vo.Member">
+        INSERT INTO t_user (user_id, user_pw, user_name, user_birthdate, user_gender, user_loc, user_phone)
+        VALUES (#{user_id}, #{user_pw}, #{user_name}, #{user_birthdate}, #{user_gender}, #{user_loc}, #{user_phone})
+    </insert>
+    
+    
+	
+</mapper>
