@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smhrd.gradle.mapper.NewsMapper">
+
+	<select id="getNewsData" resultType="com.smhrd.gradle.vo.NewsData">
+        SELECT * FROM t_news
+        where news_created_at = '2024-05-28'
+    </select>
+
+
+</mapper>
