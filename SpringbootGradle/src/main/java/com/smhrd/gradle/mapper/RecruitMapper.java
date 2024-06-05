@@ -14,4 +14,6 @@ public interface RecruitMapper {
 	List<Recruit> RDload();
 
 	int updateLatLng(String address, String latitude, String longitude);
+
+	List<Recruit> RDcategoryFind(String category);
 }

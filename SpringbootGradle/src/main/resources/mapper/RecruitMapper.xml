@@ -20,10 +20,10 @@
 	<select id="RDcategoryFind" parameterType="java.lang.String" resultType="com.smhrd.gradle.vo.Recruit">
     SELECT * FROM t_recruit
     WHERE 
-        skills LIKE CONCAT('%', #{keyword}, '%') OR
-        work LIKE CONCAT('%', #{keyword}, '%') OR
-        license LIKE CONCAT('%', #{keyword}, '%') OR
-        preference LIKE CONCAT('%', #{keyword}, '%') OR
+        skills LIKE CONCAT('%', #{category}, '%') OR
+        work LIKE CONCAT('%', #{category}, '%') OR
+        license LIKE CONCAT('%', #{category}, '%') OR
+        preference LIKE CONCAT('%', #{category}, '%') ;
 </select>
 
 	<select id="RDload" parameterType="java.lang.String" resultType="com.smhrd.gradle.vo.Recruit">
