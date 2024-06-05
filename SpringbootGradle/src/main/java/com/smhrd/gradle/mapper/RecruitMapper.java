@@ -9,5 +9,9 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface RecruitMapper {
     
-	List<Recruit> getRecruitData(String keyword);
+	List<Recruit> RDkeywordFind(String keyword);
+	
+	List<Recruit> RDload();
+
+	int updateLatLng(String address, String latitude, String longitude);
 }

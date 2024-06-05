@@ -32,4 +32,8 @@ public class Recruit {
 	private String address;
 	
 	private String deadline_at;
+	
+	private String latitude;
+	
+	private String longitude;
 }
