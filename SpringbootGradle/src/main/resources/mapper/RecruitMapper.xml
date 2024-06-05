@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smhrd.gradle.mapper.RecruitMapper">
+
+	<select id="RDkeywordFind" parameterType="java.lang.String" resultType="com.smhrd.gradle.vo.Recruit">
+    SELECT * FROM t_recruit
+    WHERE 
+        name LIKE CONCAT('%', #{keyword}, '%') OR
+        region LIKE CONCAT('%', #{keyword}, '%') OR
+        career LIKE CONCAT('%', #{keyword}, '%') OR
+        skills LIKE CONCAT('%', #{keyword}, '%') OR
+        info LIKE CONCAT('%', #{keyword}, '%') OR
+        work LIKE CONCAT('%', #{keyword}, '%') OR
+        license LIKE CONCAT('%', #{keyword}, '%') OR
+        preference LIKE CONCAT('%', #{keyword}, '%') OR
+        job_process LIKE CONCAT('%', #{keyword}, '%') OR
+        address LIKE CONCAT('%', #{keyword}, '%') ;
+	</select>
+
+	<select id="RDcategoryFind" parameterType="java.lang.String" resultType="com.smhrd.gradle.vo.Recruit">
+    SELECT * FROM t_recruit
+    WHERE 
+        skills LIKE CONCAT('%', #{keyword}, '%') OR
+        work LIKE CONCAT('%', #{keyword}, '%') OR
+        license LIKE CONCAT('%', #{keyword}, '%') OR
+        preference LIKE CONCAT('%', #{keyword}, '%') OR
+</select>
+
+	<select id="RDload" parameterType="java.lang.String" resultType="com.smhrd.gradle.vo.Recruit">
+    SELECT * FROM t_recruit
+    </select>
+    
+    <update id="updateLatLng" parameterType="java.lang.String">
+    UPDATE t_recruit
+    SET latitude = #{latitude}, longitude = #{longitude}
+    WHERE address = #{address}
+</update>
+
+
+</mapper>
