@@ -11,6 +11,8 @@ public class Recruit {
 
 	private String name;
 	
+	private String title;
+	
 	private String region;
 	
 	private String job;
