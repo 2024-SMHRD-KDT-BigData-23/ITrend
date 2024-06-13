@@ -8,6 +8,6 @@ gradle.user.home=C\:/Users/smhrd/Downloads/gradle-8.7-bin/gradle-8.7
 java.home=C\:/Program Files/Java/jdk-17
 jvm.arguments=
 offline.mode=false
-override.workspace.settings=false
+override.workspace.settings=true
 show.console.view=true
 show.executions.view=true
