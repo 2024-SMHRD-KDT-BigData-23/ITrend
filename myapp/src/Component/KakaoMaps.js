@@ -1,6 +1,6 @@
 /* global kakao */
 import React, { useState, useEffect } from 'react';
-import "../KakaoMap.css";
+import "../component/KakaoMap.css";
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import {
