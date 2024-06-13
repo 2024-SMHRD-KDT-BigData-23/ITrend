@@ -4,6 +4,8 @@ import { useCookies } from 'react-cookie';
 import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SignUp from './SignUp';
+import Swal from "sweetalert2";
+
 
 const Login = ({ closeModal }) => {
     const [credentials, setCredentials] = useState({ user_id: '', user_pw: '' });
@@ -23,54 +25,79 @@ const Login = ({ closeModal }) => {
             const result = response.data;
             console.log(result[0].user_id);
             if (result[0].user_id != null) {
-                alert("로그인이 성공했습니다.");
-                setCookie('user_id', result[0].user_id, { path: '/' });
-                closeModal();
+                Swal.fire({
+                    title: '로그인이 성공했습니다.',
+                    icon: 'success',
+                    confirmButtonText: '확인'
+                }).then(() => {
+                    // 확인 버튼을 클릭 후 싥행할 로직
+                    setCookie('user_id', result[0].user_id, { path: '/' });
+                    closeModal();
+                });
             } else {
-                alert("로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요");
+                Swal.fire({
+                    title: '로그인에 실패했습니다.',
+                    text: '아이디와 비밀번호를 확인해주세요',
+                    icon: 'error',
+                    confirmButtonText: '확인'
+                });
             }
         } catch (error) {
-            alert("될줄알았어??????????ㅋㅋㅋㅋㅋㅋㅋㅋㅋ");
+            Swal.fire({
+                title: '로그인에 실패했습니다.',
+                text: '아이디와 비밀번호를 확인해주세요',
+                icon: 'error',
+                confirmButtonText: '확인'
+            });
         }
     };
 
     return (
-        <div>
-            {!isSignUp ? (
-                <div className='loginInput'>
-                    <form onSubmit={handleSubmit}>
-                        <div style={{ display: "flex", border: "1px solid #A7E6FF" }}>
-                            <label htmlFor="user_id" style={{ width: "30%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                <FontAwesomeIcon icon={faUser} style={{ color: "#A7E6FF" }} />
-                            </label>
-                            <input type="text" id="user_id" name="user_id" value={credentials.user_id}
-                                onChange={handleInputChange}
-                                autoComplete='user_id'
-                                placeholder='아이디'
-                                style={{ flex: 1, border: "none", borderLeft: "1px solid #A7E6FF" }}
-                            />
-                        </div>
-                        <div style={{ display: "flex", border: "1px solid #A7E6FF", borderTop: "none" }}>
-                            <label htmlFor="user_pw" style={{ width: "30%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                <FontAwesomeIcon icon={faKey} style={{ color: "#A7E6FF" }} />
-                            </label>
-                            <input type="password" id="user_pw" name="user_pw" value={credentials.user_pw}
-                                onChange={handleInputChange}
-                                autoComplete='current-password'
-                                placeholder='패스워드'
-                                style={{ flex: 1, border: "none", borderLeft: "1px solid #A7E6FF" }}
-                            />
-                        </div>
-                        <button type="submit" style={{ width: "100%", marginTop: "10px", background: "none", backgroundColor: "#A7E6FF", border: "1px solid #A7E6FF" }}>Login</button>
-
-                        <div style={{ display: "flex", justifyContent: "end", width: "100%", height: "30px" }}>
-                            <button type="button" onClick={() => setIsSignUp(true)}>회원가입</button>
-                        </div>
-                    </form>
+        <div className='loginInput' style={{ minHeight: "480px", display: "flex", justifyContent: "center", width: "100%", margin: "5px", padding: "5px", border: "1px solid black" }}>
+            <div style={{ minHeight: "475px", display: "flex", flexDirection: "column", width: "80%", height: "50vh", padding: "5px", border: "1px solid blue" }}>
+                <div style={{ display: "flex", width: "100%", height: "20%", border: "1px solid red" }}>
+                    <img src='/images/ITLOGO.png' style={{ flex: "0 0 30%", height: "auto" }} alt="ITrend Logo"></img>
+                    {/* 여기 이미지 태그로 바꾸기 */}
+                    <div style={{ flex: 1, backgroundColor: "red" }}></div>
                 </div>
-            ) : (
-                <SignUp closeModal={() => setIsSignUp(false)} />  // 회원가입 컴포넌트 렌더링
-            )}
+                {!isSignUp ? (
+
+                    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                        <form onSubmit={handleSubmit}>
+
+                            <div style={{ display: "flex", border: "1px solid #A7E6FF", height: "40px" }}>
+                                <label htmlFor="user_id" style={{ width: "30%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                    <FontAwesomeIcon icon={faUser} style={{ color: "#A7E6FF" }} />
+                                </label>
+                                <input type="text" id="user_id" name="user_id" value={credentials.user_id}
+                                    onChange={handleInputChange}
+                                    autoComplete='user_id'
+                                    placeholder='아이디'
+                                    style={{ flex: 1, border: "none", borderLeft: "1px solid #A7E6FF" }}
+                                />
+                            </div>
+                            <div style={{ display: "flex", border: "1px solid #A7E6FF", borderTop: "none", height: "40px" }}>
+                                <label htmlFor="user_pw" style={{ width: "30%", display: "flex", justifyContent: "center", alignItems: "center" }}>
+                                    <FontAwesomeIcon icon={faKey} style={{ color: "#A7E6FF" }} />
+                                </label>
+                                <input type="password" id="user_pw" name="user_pw" value={credentials.user_pw}
+                                    onChange={handleInputChange}
+                                    autoComplete='current-password'
+                                    placeholder='비밀번호'
+                                    style={{ flex: 1, border: "none", borderLeft: "1px solid #A7E6FF" }}
+                                />
+                            </div>
+                            <button type="submit" style={{ width: "100%", height: "40px", background: "none", backgroundColor: "#A7E6FF", border: "1px solid #A7E6FF" }}>Login</button>
+
+                        </form>
+                        <div style={{ display: "flex", justifyContent: "end", width: "100%", height: "30px" }}>
+                            <button style={{ border: "none", background: "none", cursor: "pointer", color: "blue", textDecoration: "underline" }} type="button" onClick={() => setIsSignUp(true)}>회원가입</button>
+                        </div>
+                    </div>
+                ) : (
+                    <SignUp closeModal={closeModal} closeSignUp={() => setIsSignUp(false)} />  // 회원가입 컴포넌트 렌더링
+                )}
+            </div>
         </div>
     );
 };
