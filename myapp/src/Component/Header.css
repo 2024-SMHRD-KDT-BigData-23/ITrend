@@ -27,7 +27,6 @@
 
 .mainHeader h1 {
   border: 2px dotted #A7E6FF;
-  margin-bottom: 10px;
 }
 
 .mainHeader img {
@@ -36,16 +35,19 @@
 }
 
 .mainHeader nav ul {
+  width: 100%;
   margin: 0;
   padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: center;
 }
 
 .mainHeader nav ul li {
+  width: 100%;
   list-style: none;
-  margin-bottom: 15px;
+  margin: 0;
   transition: transform 0.3s ease;
 }
 
@@ -56,6 +58,7 @@
 button#headerMap,
 button#headerAnalysis {
   height: 60px;
+  width: 100%;
   border: none;
   outline: none;
   background: none;
@@ -66,15 +69,40 @@ button#headerAnalysis {
   justify-content: center;
 }
 
+/* 버튼의 상태를 확인해서 배경색을 변경 */
+button#headerMap.active,
+button#headerAnalysis.active {
+  background-color: #A7E6FF;
+}
 
-button#headerMap span,
-button#headerAnalysis span {
+button#headerMap.active .icon,
+button#headerAnalysis.active .icon {
+  color: white;
+}
+
+button#headerMap.active p,
+button#headerAnalysis.active p {
+  color: white;
+}
+
+button#headerMap p,
+button#headerAnalysis p {
   margin: 0;
   padding: 0;
   white-space: nowrap;
   flex-shrink: 1;
   font-size: 12px;
 }
+
+
+/* button#headerMap span,
+button#headerAnalysis span {
+  margin: 0;
+  padding: 0;
+  white-space: Nowrap;
+  flex-shrink: 1;
+  font-size: 12px;
+} */
 
 .icon {
   font-size: 25px;
@@ -100,6 +128,7 @@ button#headerAnalysis span {
   left: 0;
   width: 100%;
   height: 100%;
+  min-height: 550px;
   background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
@@ -114,6 +143,7 @@ button#headerAnalysis span {
   border-radius: 5px;
   width: 50%;
   max-width: 500px;
+  min-height: 500px;
   /* display: flex; */
   /* flex-direction: column; */
   /* justify-content: space-between; */

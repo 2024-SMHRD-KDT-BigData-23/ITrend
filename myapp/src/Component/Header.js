@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { useNavigate } from 'react-router-dom';
+// useLocation 현재의 경로를 알기위함
+import { useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faChartSimple, faUser } from '@fortawesome/free-solid-svg-icons';
 import Login from '../Login';
@@ -8,6 +9,7 @@ import './Header.css';
 const Header = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const navigate = useNavigate();
+    const location = useLocation();
 
     const openModal = () => {
         setModalOpen(true);
@@ -16,6 +18,10 @@ const Header = () => {
     const closeModal = () => {
         setModalOpen(false);
     };
+
+    // 현재 경로가 특정 경로와 일치하는지 확인하여 활성 상태를 결정합니다.
+    // 경로가 일치하면 True
+    const isActive = (path) => location.pathname === path;
 
     return (
         <div>
@@ -30,15 +36,19 @@ const Header = () => {
                 <nav>
                     <ul>
                         <li>
-                            <button id="headerMap" onClick={() => navigate('/KakaoMap')}>
+                            <button id="headerMap"
+                                className={isActive('/KakaoMap') ? 'active' : ''}
+                                onClick={() => navigate('/KakaoMap')}>
                                 <FontAwesomeIcon icon={faLocationDot} className='icon' />
-                                <span>지도 홈</span>
+                                <p className={isActive('/KakaoMap') ? 'active' : ''}>지도 홈</p>
                             </button>
                         </li>
                         <li>
-                            <button id="headerAnalysis" onClick={() => navigate('/Newspage')}>
+                            <button id="headerAnalysis"
+                                onClick={() => navigate('/Newspage')}
+                                className={isActive('/Newspage') ? 'active' : ''}>
                                 <FontAwesomeIcon icon={faChartSimple} className='icon' />
-                                <span>데이터 분석</span>
+                                <p className={isActive('/Newspage') ? 'active' : ''}>데이터 분석</p>
                             </button>
                         </li>
                     </ul>
@@ -50,6 +60,7 @@ const Header = () => {
                 </div>
 
             </header>
+
             {modalOpen && (
                 <div className="modal-overlay2" onClick={closeModal}>
                     <div className="modal-content2" onClick={(e) => e.stopPropagation()}>
