@@ -12,6 +12,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
+import _ from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faSliders, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
@@ -31,9 +32,7 @@ const KakaoMap = () => {
     const [kakaoLoaded, setKakaoLoaded] = useState(false); // Kakao API 로드 상태 관리
     const [dbPlaces, setDbPlaces] = useState([]);
     const [clusterer, setClusterer] = useState(null);
-
     const [showCheckboxes, setShowCheckboxes] = useState(false); // 체크박스 옵션을 보여줄지 여부를 관리하는 상태 변수
-
     const [showCluster, setShowCluster] = useState(false); // 클러스터 클릭시 클러스터의 정보를 보여주기 위한 상태 관리 변수
     const [clusterMarkers, setClusterMarkers] = useState([]); // 클러스터 안의 마커 정보를 관리하는 상태
     const [recruitInfo, setRecruitInfo] = useState(false); // 채용정보를 출력을 담당하는 변수
@@ -288,7 +287,7 @@ const KakaoMap = () => {
         try {
             const response = await axios.post('http://localhost:8080/api/RDcategoryFind', selectedOptions)
             const placesFromDb = Array.isArray(response.data) ? response.data : [];
-
+            const uniquePlaces = _.uniqBy(placesFromDb, 'title');
             if (map) {
                 let currentClusterer = clusterer;
                 if (currentClusterer) {
@@ -296,10 +295,10 @@ const KakaoMap = () => {
                 } else {
                     currentClusterer = createClusterer(map); // 클러스터러를 생성합니다
                 }
-                loadMarkers(placesFromDb, currentClusterer);
+                loadMarkers(uniquePlaces, currentClusterer);
             }
 
-            setDbPlaces(placesFromDb);
+            setDbPlaces(uniquePlaces);
             setShowCheckboxes(false);
             map.setLevel(12);
         } catch (error) {
@@ -519,7 +518,7 @@ const KakaoMap = () => {
                                             <li key={index} className="item" onClick={() => handlePlaceClick(place)}>
                                                 <div className="info" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                                     <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black" }}>
-                                                        <h4>기업ㅁㄴㅇ라ㅓㄴ아ㅣ러명입ㄹㄴㅁㄹ니다.</h4>
+                                                        <h4>{place.title}</h4>
                                                     </div>
                                                     <div className='placeHeader' style={{ display: "flex" }}>
                                                         <div style={{ flex: "0 0 60%", width: "60%", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black", marginRight: "10px" }}>
@@ -548,7 +547,7 @@ const KakaoMap = () => {
                                                 <li key={index} className="item" onClick={() => handlePlaceClick(place)} style={{ listStyleType: "none" }}>
                                                     <div className="info" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
                                                         <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black" }}>
-                                                            <h4>기업ㅁㄴㅇ라ㅓㄴ아ㅣ러명입ㄹㄴㅁㄹ니다.</h4>
+                                                            <h4>{place.title}</h4>
                                                         </div>
                                                         <div className='placeHeader' style={{ display: "flex" }}>
                                                             <div style={{ flex: "0 0 60%", width: "60%", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black", marginRight: "10px" }}>

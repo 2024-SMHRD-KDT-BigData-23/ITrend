@@ -4,20 +4,26 @@ import Home from './Home';
 import Login from './Login';
 import Signup from './SignUp';
 import Dashboard from './Dashboard';
-import KakaoMapPage from './pages/KakaoMap';
 import Newspage from './Newspage';
 import PrivateRoute from './PrivateRoute';
+import Header from './Component/Header';
+import KakaoMap from './Component/KakaoMap';
 
 function App() {
     return (
+
         <BrowserRouter>
             <div className="App">
+                <div style={{display:"flex"}}>
+                    <Header />
+                    {/* <KakaoMap /> */}
+                </div>
                 <Routes>
                     <Route path="/home" element={<Home />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/signup" element={<Signup />} />
                     <Route path="/dashboard" element={<Dashboard />} />
-                    <Route path="/KakaoMap" element={<KakaoMapPage/>} />
+                    <Route path="/KakaoMap" element={<KakaoMap/>} />
                     <Route path="/Newspage" element={
                         <PrivateRoute>
                             <Newspage />
