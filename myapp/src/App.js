@@ -12,7 +12,7 @@ function App() {
         <div className="App">
             <div style={{ display: "flex" }}>
                 <Header />
-                {/* <KakaoMap /> */}
+                <KakaoMap />
             </div>
 
         </div>
