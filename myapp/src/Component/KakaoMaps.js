@@ -1,6 +1,6 @@
 /* global kakao */
 import React, { useState, useEffect } from 'react';
-import "../component/KakaoMap.css";
+import "./KakaoMap.css";
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -12,7 +12,8 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
-import _ from 'lodash';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faMagnifyingGlass, faSliders, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 
 // Chart.js의 구성 요소를 등록합니다.
 ChartJS.register(
@@ -30,16 +31,39 @@ const KakaoMap = () => {
     const [kakaoLoaded, setKakaoLoaded] = useState(false); // Kakao API 로드 상태 관리
     const [dbPlaces, setDbPlaces] = useState([]);
     const [clusterer, setClusterer] = useState(null);
+
     const [showCheckboxes, setShowCheckboxes] = useState(false); // 체크박스 옵션을 보여줄지 여부를 관리하는 상태 변수
-    const [selectedOptions, setSelectedOptions] = useState([]); // 선택된 체크박스 리스트
+
     const [showCluster, setShowCluster] = useState(false); // 클러스터 클릭시 클러스터의 정보를 보여주기 위한 상태 관리 변수
     const [clusterMarkers, setClusterMarkers] = useState([]); // 클러스터 안의 마커 정보를 관리하는 상태
-    const [checkedCategory, setcheckedCategory] = useState([]);
     const [recruitInfo, setRecruitInfo] = useState(false); // 채용정보를 출력을 담당하는 변수
     const [selectedPlace, setSelectedPlace] = useState(null); // 클릭한 공고의 채용정보를 저장할 변수
+    const [showChart, setShowChart] = useState(false);
     const [barChartData, setBarChartData] = useState({ labels: [], datasets: [] }); // 클러스터러를 클릭 할 경우, bar chart의 skills 목록을 변경하기 위한 옵션
     const [jobChartData, setJobChartData] = useState({ labels: [], datasets: [] }); // 클러스터러를 클릭 할 경우, bar chart의 job 목록을 변경하기 위한 옵션
 
+    const [currentOptions, setCurrentOptions] = useState({});// 현재 필터옵션을 저장할 변수
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
+    const handleSkillsClick = () => {
+        setCurrentOptions(skillsOptions);
+    };
+
+    const handleJobClick = () => {
+        setCurrentOptions(jobOptions);
+    };
+
+    const handleCheckboxChange = (e) => {
+        const { name, checked } = e.target;
+        setSelectedOptions(prevState =>
+            checked ? [...prevState, name] : prevState.filter(option => option !== name)
+        );
+    };
+
+    // 필터의 초기화버튼 클릭시 체크된 체크박스 초기화
+    const handleReset = () => {
+        setSelectedOptions([]);
+    };
 
     // 검색어 입력 시 상태 업데이트
     const handleChange = (e) => {
@@ -47,7 +71,7 @@ const KakaoMap = () => {
     };
 
     // 검색 필터 목록
-    const options = {
+    const skillsOptions = {
         "Back-end": [
             "Python", "Java", "C", "C++", "C#", "Perl", "PHP", "Ruby", "Scala", "Solidity", "VisualBasic", ".NET",
             "ABAP", "ASP", "ASP.NET", "Flask", "GoLang", "GraphQL", "JPA", "JSP", "Kafka", "LabVIEW", "MyBatis",
@@ -67,6 +91,21 @@ const KakaoMap = () => {
             "data_visualization", "DW", "ETL", "RDBMS", "text_mining", "DBMS"
         ]
     };
+    const jobOptions = {
+        "개발": [
+            "CTO", "DBA", "ERP", "iOS개발", "QA",
+            "VR엔지니어", "게임개발", "기술지원", "네트워크/보안/운영", "백엔드개발",
+            "소프트웨어개발", "소프트웨어아키텍트", "안드로이드개발", "웹개발", "웹퍼블리셔",
+            "클라우드개발", "프론트엔드개발", "하드웨어개발"
+        ],
+        "데이터": [
+            "BI엔지니어", "데이터분석가", "데이터사이언티스트", "데이터엔지니어", "머신러닝엔지니어",
+            "빅데이터엔지니어"
+        ],
+        "디자인": [
+            "UI/UX/GUI디자인", "웹디자인"
+        ]
+    };
 
     // 클러스터 클릭 이벤트 핸들러 함수
     const handleClusterClick = (cluster) => {
@@ -75,6 +114,8 @@ const KakaoMap = () => {
         console.log('Markers in cluster:', markers);
         // 각 마커의 정보를 출력
         setShowCluster(true);
+        setShowChart(true); // 차트를 출력
+        setRecruitInfo(false); // 채용정보를 출력여부를 false로
         const markerInfos = markers.map(marker => marker.placeInfo); // marker.place를 marker.placeInfo로 변경
         setClusterMarkers(markerInfos);
 
@@ -100,10 +141,10 @@ const KakaoMap = () => {
         // skill은 skill, count라는 두개의 속성을 가진다.
         const skillsCount = skillsArray.map(skill => ({
             skill: skill,
-            
+
             // markerInfos 배열의 각 요소(info)를 순회합니다.
             // filter 메소드는 주어진 조건을 만족하는 요소들만을 포함하는 새로운 배열을 반환합니다.
-                // info.skills가 존재하고, 해당 skills 문자열에 현재의 skill이 포함되어 있는지 확인합니다.
+            // info.skills가 존재하고, 해당 skills 문자열에 현재의 skill이 포함되어 있는지 확인합니다.
             // 조건을 만족하는 요소들만을 포함하는 배열이 생성되며, 이 배열의 길이(length)가 현재 skill의 등장 횟수입니다.
             // 이 값을 count 속성으로 설정하여 객체를 생성합니다.
             count: markerInfos.filter(info => info.skills && info.skills.includes(skill)).length
@@ -121,7 +162,7 @@ const KakaoMap = () => {
 
         // slice 메소드는 배열의 일부를 추출하여 새로운 배열을 반환합니다.
         // slice 메소드는 두 개의 인수를 받을 수 있습니다: 시작 인덱스와 끝 인덱스 (끝 인덱스는 포함되지 않습니다).
-        const topSkills = skillsCount.slice(0, 5);
+        const topSkills = skillsCount.slice(0, 10);
 
 
         //  차트 데이터를 업데이트
@@ -133,7 +174,6 @@ const KakaoMap = () => {
             // 각 스킬이 마커 정보에서 몇 번 등장하는지 필터링하여 그 수를 계산합니다.
             datasets: [
                 {
-                    label: 'Number of Positions',
                     data: topSkills.map(item => item.count),
                     borderColor: 'rgb(255, 99, 132)',
                     backgroundColor: 'rgba(255, 99, 132, 0.5)',
@@ -160,14 +200,13 @@ const KakaoMap = () => {
 
         // 상위 5개 데이터로 제한
         jobCount.sort((a, b) => b.count - a.count);
-        const topJobs = jobCount.slice(0, 5);
+        const topJobs = jobCount.slice(0, 10);
 
 
         const newJobChartData = {
             labels: topJobs.map(item => item.job),
             datasets: [
                 {
-                    label: 'Number of Positions',
                     data: topJobs.map(item => item.count),
                     borderColor: 'rgb(54, 162, 235)',
                     backgroundColor: 'rgba(54, 162, 235, 0.5)',
@@ -182,19 +221,7 @@ const KakaoMap = () => {
     // 체크박스 보여주기
     const toggleCheckboxes = () => {
         setShowCheckboxes(prevState => !prevState);
-    };
-    // 체크박스 상태 변경 시 호출되는 함수`
-    const handleCheckboxChange = (e) => {
-        const { name, checked } = e.target;
-        setSelectedOptions(prevState => {
-            if (checked) {
-                setcheckedCategory([...checkedCategory, name]);
-                return [...prevState, name]; // 체크된 경우 리스트에 추가
-            } else {
-                setcheckedCategory(checkedCategory.filter(option => option !== name));
-                return prevState.filter(option => option !== name); // 체크 해제된 경우 리스트에서 제거
-            }
-        });
+        setCurrentOptions(skillsOptions);
     };
 
     const createClusterer = (map) => {
@@ -231,14 +258,14 @@ const KakaoMap = () => {
         console.log(dbPlaces)
     };
 
-    // 지도 타입을 변경하는 함수
-    const setMapType = (maptype) => {
-        if (maptype === 'roadmap') {
-            map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);
-        } else {
-            map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);
-        }
-    };
+    // // 지도 타입을 변경하는 함수
+    // const setMapType = (maptype) => {
+    //     if (maptype === 'roadmap') {
+    //         map.setMapTypeId(kakao.maps.MapTypeId.ROADMAP);
+    //     } else {
+    //         map.setMapTypeId(kakao.maps.MapTypeId.HYBRID);
+    //     }
+    // };
 
     // 지도를 확대하는 함수
     const zoomIn = () => {
@@ -259,9 +286,9 @@ const KakaoMap = () => {
 
     const RDcategoryFind = async () => {
         try {
-            const response = await axios.post('http://localhost:8080/api/RDcategoryFind', checkedCategory)
+            const response = await axios.post('http://localhost:8080/api/RDcategoryFind', selectedOptions)
             const placesFromDb = Array.isArray(response.data) ? response.data : [];
-            const uniquePlaces = _.uniqBy(placesFromDb, 'title');
+
             if (map) {
                 let currentClusterer = clusterer;
                 if (currentClusterer) {
@@ -269,10 +296,10 @@ const KakaoMap = () => {
                 } else {
                     currentClusterer = createClusterer(map); // 클러스터러를 생성합니다
                 }
-                loadMarkers(uniquePlaces, currentClusterer);
+                loadMarkers(placesFromDb, currentClusterer);
             }
 
-            setDbPlaces(uniquePlaces);
+            setDbPlaces(placesFromDb);
             setShowCheckboxes(false);
             map.setLevel(12);
         } catch (error) {
@@ -283,6 +310,7 @@ const KakaoMap = () => {
     // 키워드로 장소를 검색하는 함수
     const searchPlaces = async (e) => {
         e.preventDefault();
+        setRecruitInfo(false);
         if (!keyword.trim()) {
             alert('검색어를 입력해주세요!');
             return;
@@ -340,6 +368,7 @@ const KakaoMap = () => {
         map.setLevel(1); // 지도의 확대 레벨을 1로 설정
         setSelectedPlace(place); // 선택된 장소 정보 설정
         setRecruitInfo(true); // 장소 클릭 시 recruitInfo 상태를 true로 설정
+        setShowChart(false); // 차트를 미출력
     };
 
     // 지도 생성 함수
@@ -351,6 +380,10 @@ const KakaoMap = () => {
             maxLevel: 12
         };
         const map = new kakao.maps.Map(mapContainer, mapOption);
+        // 맵에 줌 레벨 추가하기ㄴ
+        // const zoomControl = new kakao.maps.ZoomControl();
+        // map.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
+
 
         setMap(map); // map 상태 업데이트
 
@@ -378,6 +411,15 @@ const KakaoMap = () => {
         };
     }, []); // Empty dependency array to ensure it runs only once
 
+
+    // 차트의 라벨 길이 조절하기
+    const truncateLabel = (label) => {
+        const maxLabelLength = 3;
+        if (label.length > maxLabelLength) {
+            return label.substr(0, maxLabelLength) + '...';
+        }
+        return label.padEnd(maxLabelLength + 3); // 3 for '...'
+    };
     // 차트 그리기
     const barChartOptions = {
         indexAxis: 'y', // 수평 막대 차트로 설정
@@ -387,168 +429,278 @@ const KakaoMap = () => {
             },
         },
         responsive: true, // 반응형 설정
+        maintainAspectRatio: false, // 비율 유지하지 않음
         plugins: {
             legend: {
-                position: 'right', // 범례 위치
+                display: false, // 범례 위치
             },
             title: {
                 display: true, // 제목 표시
                 text: '기술 스택', // 제목 텍스트
+                font: {
+                    size: 20, // 글꼴 크기
+                    family: 'Arial', // 글꼴 가족
+                    weight: 'bold', // 글꼴 굵기
+                },
             },
         },
+        scales: {
+            y: {
+                ticks: {
+                    callback: function (value) {
+                        const label = this.getLabelForValue(value);
+                        return truncateLabel(label);
+                    }
+                }
+            }
+        }
+    };
+
+
+    const jobChartOptions = {
+        indexAxis: 'y', // 수평 막대 차트로 설정
+        elements: {
+            bar: {
+                borderWidth: 1, // 막대 테두리 두께
+            },
+        },
+        responsive: true, // 반응형 설정
+        maintainAspectRatio: false, // 비율 유지하지 않음
+        plugins: {
+            legend: {
+                display: false, // 범례 위치
+            },
+            title: {
+                display: true, // 제목 표시
+                text: '직무', // 제목 텍스트
+                position: 'top', // 제목 위치 (가능한 값: 'top', 'left', 'bottom', 'right')
+                font: {
+                    size: 20, // 글꼴 크기
+                    family: 'Arial', // 글꼴 가족
+                    weight: 'bold', // 글꼴 굵기
+                },
+            },
+        },
+        scales: {
+            y: {
+                ticks: {
+                    callback: function (value) {
+                        const label = this.getLabelForValue(value);
+                        return truncateLabel(label);
+                    }
+                }
+            }
+        }
     };
 
     return (
         <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
             <div className='kakaoMap' id="map">
-                <div className="search-box" style={{ width: "300px", position: 'relative', top: '10px', left: '10px', zIndex: 10, backgroundColor: 'white', borderRadius: '5px' }}>
-                    <form onSubmit={searchPlaces}>
-                        <div>
-                            {/* 옵션 버튼을 클릭하면 체크박스 옵션들을 보여줍니다. 클릭시 showCheckBoxes의 옵션이 true가 됩니다.*/}
-                            <input type="text" value={keyword} onChange={handleChange} placeholder="장소를 검색하세요." id="keyword" size="15" style={{ width: '260px', height: '30px' }} />
-                            <button type="submit" style={{ width: '30px', height: '30px' }}>검
+                <div className='mapInfo' style={{ position: "relative", backgroundColor: "white", width: '300px', height: "100%", zIndex: 10 }}>
+                    <div className="searchBox" style={{ height: "90px", width: "100%", position: 'relative', backgroundColor: 'white', padding: "5px" }}>
+                        <div className='sarchInput' style={{ width: "100%", height: "60%", border: "2px solid #A7E6FF" }}>
+                            <input value={keyword} onChange={handleChange} placeholder="장소를 검색하세요." id="keyword" size="15" style={{ border: "none", width: "80%", height: "100%", paddingLeft: "10px" }} />
+                            <button type='button' onClick={searchPlaces} style={{ border: "none", borderLeft: "1px solid #A7E6FF", background: "none", width: "20%", height: "100%" }}>
+                                <FontAwesomeIcon icon={faMagnifyingGlass} style={{ color: "#A7E6FF" }} />
                             </button>
                         </div>
-                        <button type='button' onClick={toggleCheckboxes} style={{ width: '50px', height: '25px' }}>옵션</button>
-                    </form>
-                </div>
 
-                <div style={{ display: 'flex', width: '40%', height: '100%', paddingLeft: '10px', paddingTop: '30px' }}>
-                    <div style={{ width: "300px", position: 'relative', left: '10px', zIndex: 10, backgroundColor: 'white', borderRadius: '5px', maxHeight: '700px' }}>
-                        {showCluster ? (
-                            <div id="cluster_menu_wrap" className="bg_white" style={{ maxHeight: '700px', overflowY: 'auto', backgroundColor: 'white' }}>
-                                <ul id="clusterPlacesList">
-                                    {clusterMarkers.map((place, index) => (
-                                        <li key={index} className="item" onClick={() => handlePlaceClick(place)}>
-                                            <span className={`markerbg marker_${index + 1}`}><h3>{place.name}</h3></span>
-                                            <div className="info" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                <span>{place.address}</span>
-                                            </div>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        ) : (
-                            dbPlaces.length > 0 && (
-                                <div id="db_menu_wrap" className="bg_white" style={{ maxHeight: '700px', overflowY: 'auto', backgroundColor: 'white' }}>
-                                    <ul id="dbPlacesList">
-                                        {dbPlaces.map((place, index) => (
+                        <div className="filterOptions" style={{ display: 'flex', justifyContent: 'flex-start', marginTop: '5px' }}>
+                            <button type='button' onClick={toggleCheckboxes} style={{ border: "none" }}>
+                                <FontAwesomeIcon icon={faSliders} style={{ color: "#6a6774" }} />
+                            </button>
+                        </div>
+
+                        <div className='mapRecruitList' style={{ display: "flex", width: "100%", height: "100vh", marginTop: "10px", borderTop: "1px solid black" }}>
+                            {showCluster ? (
+                                <div id="cluster_menu_wrap" className="bg_white" style={{ maxHeight: '100vh', overflowY: 'auto', backgroundColor: 'white', marginTop: "10px" }}>
+                                    <ul id="clusterPlacesList" style={{ listStyleType: "none", padding: "5px" }}>
+                                        {clusterMarkers.map((place, index) => (
                                             <li key={index} className="item" onClick={() => handlePlaceClick(place)}>
-                                                <span className={`markerbg marker_${index + 1}`}><h3>{place.title}</h3></span>
-                                                <div className="info" style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                    <span>{place.address}</span>
+                                                <div className="info" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black" }}>
+                                                        <h4>기업ㅁㄴㅇ라ㅓㄴ아ㅣ러명입ㄹㄴㅁㄹ니다.</h4>
+                                                    </div>
+                                                    <div className='placeHeader' style={{ display: "flex" }}>
+                                                        <div style={{ flex: "0 0 60%", width: "60%", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black", marginRight: "10px" }}>
+                                                            <span style={{ textDecoration: 'underline', textDecorationSkipInk: 'none' }} className={`markerbg marker_${index + 1}`}>{place.name}</span>
+                                                        </div>
+                                                        <div style={{ flex: "1", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                            <sapn>{place.job}</sapn>
+                                                        </div>
+                                                    </div>
+                                                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                        <span>{place.address}</span>
+                                                    </div>
+                                                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                        <span>{place.skills}</span>
+                                                    </div>
                                                 </div>
                                             </li>
                                         ))}
                                     </ul>
                                 </div>
-                            )
-                        )}
+                            ) : (
+                                dbPlaces.length > 0 && (
+                                    <div id="db_menu_wrap" className="bg_white" style={{ maxHeight: '100%', overflowY: 'auto', backgroundColor: 'white', marginTop: "10px" }}>
+                                        <ul id="dbPlacesList" style={{ listStyleType: "none", paddingLeft: "5px" }}>
+                                            {dbPlaces.map((place, index) => (
+                                                <li key={index} className="item" onClick={() => handlePlaceClick(place)} style={{ listStyleType: "none" }}>
+                                                    <div className="info" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black" }}>
+                                                            <h4>기업ㅁㄴㅇ라ㅓㄴ아ㅣ러명입ㄹㄴㅁㄹ니다.</h4>
+                                                        </div>
+                                                        <div className='placeHeader' style={{ display: "flex" }}>
+                                                            <div style={{ flex: "0 0 60%", width: "60%", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black", marginRight: "10px" }}>
+                                                                <span style={{ textDecoration: 'underline', textDecorationSkipInk: 'none' }} className={`markerbg marker_${index + 1}`}>{place.name}</span>
+                                                            </div>
+                                                            <div style={{ flex: "1", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                                <sapn>{place.job}</sapn>
+                                                            </div>
+                                                        </div>
+                                                        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                            <span>{place.address}</span>
+                                                        </div>
+                                                        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                                            <span>{place.skills}</span>
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )
+                            )}
+                        </div>
                     </div>
+                </div>
+                {recruitInfo && selectedPlace && (
+                    <div className='recruitInfo' style={{ top: 0, left: 300, border: "1px solid black", position: "absolute", backgroundColor: "white", width: '25%', height: "100%", zIndex: 10 }}>
 
-                    {recruitInfo && selectedPlace && (
-                        <div style={{ display: 'flex' }}>
-                            {/* width: "300px", position: 'relative', left: '10px', zIndex: 10, backgroundColor: 'white', borderRadius: '5px', maxHeight: '700px' */}
-                            <div className="tempRecruitInfo" style={{ position: 'relative', maxHeight: '700px', padding: '0 10px', width: '500px', backgroundColor: 'white', zIndex: 10, border: '1px solid #ccc', borderRadius: '5px', boxShadow: '0 2px 4px rgba(0,0,0,0.2)', marginLeft: '10px', overflowY: 'auto' }}>
-                                <div className="tempRecruitHead" style={{ borderBottom: '2px solid #000' }}>
-                                    <span style={{ fontSize: '24px', fontWeight: 'bold', textDecoration: 'underline' }}>Recruit Information</span>
-                                </div>
-                                <div className='tempRcruitNeck' style={{ height: '10px', backgroundColor: "green" }}></div>
-                                <div className='tempRecruitBody' style={{ border: '1px solid', marginTop: '5px', padding: "5px" }}>
-                                <p><strong>Region:</strong> {selectedPlace.title}</p>
-                                    < p > <strong>Name:</strong> {selectedPlace.name}</p>
-                                    <p><strong>Region:</strong> {selectedPlace.region}</p>
-                                    <p><strong>Job:</strong> {selectedPlace.job}</p>
-                                    <p><strong>Carrer:</strong> {selectedPlace.carrer}</p>
-                                    <p><strong>Skills:</strong> {selectedPlace.skills}</p>
-                                    <p><strong>Info:</strong> {selectedPlace.info}</p>
-                                    <p><strong>Work:</strong> {selectedPlace.work}</p>
-                                    <p><strong>License:</strong> {selectedPlace.license}</p>
-                                    <p><strong>Preference:</strong> {selectedPlace.preference}</p>
-                                    <p><strong>Job Process:</strong> {selectedPlace.job_process}</p>
-                                    <p><strong>Address:</strong> {selectedPlace.address}</p>
-                                    <p><strong>Deadline:</strong> {selectedPlace.deadline_at}</p>
-                                    <p><strong>Latitude:</strong> {selectedPlace.latitude}</p>
-                                    <p><strong>Longitude:</strong> {selectedPlace.longitude}</p>
-                                </div>
-                            </div>
+                        <div className="tempRecruitHead" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #000' }}>
+                            <span style={{ fontSize: '24px', fontWeight: 'bold', textDecoration: 'underline' }}>Recruit Information</span>
                             <button style={{ width: "30px", height: "30px", backgroundColor: 'white', zIndex: 10, border: '1px solid #ccc' }} onClick={() => {
                                 setRecruitInfo(false);
                                 setSelectedPlace(null);
                             }}>X</button>
                         </div>
-                    )}
-                </div>
+
+                        <div className='tempRcruitNeck' style={{ height: '10px', backgroundColor: "green" }}></div>
+
+                        <div className='tempRecruitBody' style={{ position: "relative", maxHeight: "100%", border: '1px solid', marginTop: '5px', padding: "5px", overflowY: 'auto' }}>
+                            < p > <strong>Name:</strong> {selectedPlace.name}</p>
+                            <p><strong>Region:</strong> {selectedPlace.region}</p>
+                            <p><strong>Job:</strong> {selectedPlace.job}</p>
+                            <p><strong>Carrer:</strong> {selectedPlace.carrer}</p>
+                            <p><strong>Skills:</strong> {selectedPlace.skills}</p>
+                            <p><strong>Info:</strong> {selectedPlace.info}</p>
+                            <p><strong>Work:</strong> {selectedPlace.work}</p>
+                            <p><strong>License:</strong> {selectedPlace.license}</p>
+                            <p><strong>Preference:</strong> {selectedPlace.preference}</p>
+                            <p><strong>Job Process:</strong> {selectedPlace.job_process}</p>
+                            <p><strong>Address:</strong> {selectedPlace.address}</p>
+                            <p><strong>Deadline:</strong> {selectedPlace.deadline_at}</p>
+                            <p><strong>Latitude:</strong> {selectedPlace.latitude}</p>
+                            <p><strong>Longitude:</strong> {selectedPlace.longitude}</p>
+                        </div>
+
+                    </div>
+                )
+                }
 
                 {/* showCheckboxes 상태가 true일 때만 체크박스 옵션을 표시합니다 */}
-                {
-                    showCheckboxes && (
-                        // showCheckboxes가 true일 때만 렌더링
-                        <div className="modal-overlay" onClick={toggleCheckboxes}>
-                            {/* 모달 외부 영역 클릭 시 toggleCheckboxes 호출 */}
-                            <div className="modal-content" onClick={e => e.stopPropagation()}>
-                                {/* 모달 내부 클릭 시 이벤트 전파 방지 */}
-                                {Object.keys(options).map(category => (
-                                    // 각 카테고리에 대해 반복
-                                    <div key={category} style={{ marginBottom: '10px' }}>
-                                        <strong>{category}</strong>
-                                        {/* 카테고리 이름을 굵게 표시 */}
-                                        <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                            {/* 카테고리 내의 옵션들을 3개씩 나누어 행으로 정렬 */}
-                                            {Array.from({ length: Math.ceil(options[category].length / 3) }, (_, rowIndex) => (
-                                                <div key={rowIndex} style={{ display: 'flex' }}>
-                                                    {/* 각 행에 3개의 옵션을 포함 */}
-                                                    {options[category].slice(rowIndex * 3, rowIndex * 3 + 3).map(option => {
-                                                        const optionId = `option-${option}`;
-                                                        return (
-                                                            <label key={option} htmlFor={optionId} style={{ display: 'flex', alignItems: 'center', marginRight: '10px', width: '150px' }}>
-                                                                <input
-                                                                    type="checkbox"
-                                                                    id={optionId}
-                                                                    name={option}
-                                                                    checked={selectedOptions.includes(option)}
-                                                                    onChange={handleCheckboxChange}
-                                                                />
-                                                                {/* 체크박스 상태가 변경될 때 handleCheckboxChange 호출 */}
-                                                                <span style={{ marginLeft: '5px' }}>{option}</span>
-                                                                {/* 옵션 이름 표시 */}
-                                                            </label>
-                                                        );
-                                                    })}
-                                                </div>
-                                            ))}
+                {showCheckboxes && (
+                    // showCheckboxes가 true일 때만 렌더링
+                    <div className="modal-overlay" onClick={toggleCheckboxes}>
+                        {/* 모달 외부 영역 클릭 시 toggleCheckboxes 호출 */}
+                        <div className="modal-content" onClick={e => e.stopPropagation()}>
+                            {/* 모달 내부 클릭 시 이벤트 전파 방지 */}
+                            <div style={{ height: "400px", display: 'flex', flexDirection: 'column' }}>
+                                <div className='optionSpace' style={{ display: "flex", height: "30px" }}>
+                                    <button type='button' onClick={handleSkillsClick}>
+                                        기술스택
+                                    </button>
+                                    <button type='button' onClick={handleJobClick}>
+                                        직무
+                                    </button>
+                                </div>
+                                <div className='checkBoxSpace' style={{ flexGrow: 1, overflowY: 'auto', marginBottom:"10px", marginTop:"10px"}}>
+                                    {Object.keys(currentOptions).map(category => (
+                                        <div key={category} style={{ marginBottom: '10px' }}>
+                                            <strong>{category}</strong>
+                                            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                                {currentOptions[category].map(option => (
+                                                    <label key={option} htmlFor={option} style={{ display: 'flex', alignItems: 'center', marginRight: '10px', width: '30%' }}>
+                                                        <input
+                                                            type="checkbox"
+                                                            id={option}
+                                                            name={option}
+                                                            checked={selectedOptions.includes(option)}
+                                                            onChange={handleCheckboxChange}
+                                                        />
+                                                        <span style={{ marginLeft: '5px' }}>{option}</span>
+                                                    </label>
+                                                ))}
+                                            </div>
                                         </div>
-                                    </div>
-                                ))}
-                                {/* 카테고리 검색 버튼, 클릭 시 RDcategoryFind 함수 호출 */}
-                                <button onClick={RDcategoryFind} type="submit" style={{ width: '100%', height: '25px' }}>
-                                    카테고리 검색
-                                </button>
+                                    ))}
+                                </div>
+
+                                <div className="modal-button" style={{ display: 'flex', justifyContent: 'flex-end', height: "30px" }}>
+                                    {/* 카테고리 검색 버튼, 클릭 시 RDcategoryFind 함수 호출 */}
+                                    <button type='button' onClick={handleReset} style={{width:"10%", height:"100%", fontSize:"12px"}}>초기화</button>
+                                    <button onClick={RDcategoryFind} type="button" style={{ width: '10%', height: '100%', marginLeft:"10px", fontSize:"12px" }}>
+                                        검색
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    )
-                }
-                <div className="mapStyle">
-                    <button id="mapBtn" onClick={() => setMapType('roadmap')}>지도</button>
-                    <button id="skyBtn" onClick={() => setMapType('skyview')}>스카이뷰</button>
-                    <button id="ZoomInBtn" onClick={zoomIn}><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_plus.png" alt="확대"></img></button>
-                    <br />
-                    <button id="ZoomOutBtn" onClick={zoomOut}><img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/ico_minus.png" alt="축소"></img></button>
-                </div>
 
 
-                {/* 차트를 그리는 영역 */}
-                {showCluster && (
-                    <div className="barChart" style={{ width: "20%", height: '70vh', position: 'absolute', top: '15%', right: '0px', zIndex: 10, backgroundColor: 'white', borderRadius: '5px' }}>
-                        <div style={{ border: '1px solid', height: '50%' }}>
-                            <Bar options={barChartOptions} data={barChartData} />
-                        </div>
-                        <div style={{ border: '1px solid', height: '50%' }}>
-                            <Bar options={barChartOptions} data={jobChartData} />
                         </div>
                     </div>
                 )}
 
+                {/* 차트를 그리는 영역 */}
+                {showChart ? (
+                    <div className='chartSpace' style={{ display: "flex", position: "absolute", width: "25%", height: '100%', zIndex: 10, top: "0px", right: '0px' }}>
+                        <div style={{ display: 'flex', flexDirection: 'column', width: "50px" }}>
+                            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                                <button type='button' onClick={() => {
+                                    setShowChart(false);
+                                }} style={{
+                                    width: "30px", height: "30px"
+                                }}>X</button>
+                            </div>
+                            <button style={{ marginTop: "10px", justifyContent: 'center' }} id="ZoomInBtn" onClick={zoomIn}>
+                                <FontAwesomeIcon icon={faPlus} className='icon' />
+                            </button>
+                            <button style={{ marginTop: "10px", justifyContent: 'center' }} id="ZoomOutBtn" onClick={zoomOut}>
+                                <FontAwesomeIcon icon={faMinus} className='icon' />
+                            </button>
+                        </div>
+                        <div className="barChart" style={{ flexGrow: 1, height: '100%', position: 'relative', backgroundColor: 'white', padding: "5px", right: "0px" }}>
+                            <div style={{ borderBottom: '1px solid', height: '50%' }}>
+                                <Bar options={barChartOptions} data={barChartData} />
+                            </div>
+                            <div style={{ height: '50%' }}>
+                                <Bar options={jobChartOptions} data={jobChartData} />
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="mapStyle">
+                        <button type='button' id="ZoomInBtn" onClick={zoomIn}>
+                            <FontAwesomeIcon icon={faPlus} className='icon' />
+                        </button>
+                        <button type='button' id="ZoomOutBtn" onClick={zoomOut}>
+                            <FontAwesomeIcon icon={faMinus} className='icon' />
+                        </button>
+                        <br></br>
+                        <button type='button' id="mapBtn" onClick={() => {
+                            map.setLevel(12);
+                        }}>초기화면</button>
+                    </div>)
+                }
             </div >
         </div >
     );
