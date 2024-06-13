@@ -1,3 +1,22 @@
+/* App.css 또는 Header.css */
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+.header {
+  flex-shrink: 0;
+  /* Header 크기가 줄어들지 않도록 고정 */
+}
+
+.content {
+  flex-grow: 1;
+  /* Routes 영역이 남은 공간을 차지하도록 설정 */
+  overflow-y: auto;
+}
+
+
 /* Header 영역 */
 .mainHeader {
   position: relative;
@@ -85,7 +104,8 @@ button#headerAnalysis span {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1000; /* 높은 z-index 값으로 다른 요소 위에 표시 */
+  z-index: 1000;
+  /* 높은 z-index 값으로 다른 요소 위에 표시 */
 }
 
 .modal-content2 {

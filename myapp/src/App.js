@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Login from './Login';
 import Signup from './SignUp';
 import Newspage from './Newspage';
@@ -11,11 +12,22 @@ function App() {
 
         <div className="App">
             <div style={{ display: "flex" }}>
-                <Header />
-                <KakaoMap />
+                <BrowserRouter>
+                    <Header />
+                    <Routes>
+                        <Route path="/" element={<KakaoMap />} />
+                        <Route path="/signup" element={<Signup />} />
+                        <Route path="/KakaoMap" element={<KakaoMap />} />
+                        <Route path="/Newspage" element={
+                            <PrivateRoute>
+                                <Newspage />
+                            </PrivateRoute>
+                        } />
+                    </Routes>
+                </BrowserRouter>
             </div>
-
         </div>
+
     );
 }
 
