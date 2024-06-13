@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useCookies } from 'react-cookie';
 
-const LoginForm = () => {
+const LoginForm = ({ closeModal }) => {
     const [credentials, setCredentials] = useState({ user_id: '', user_pw: '' });
     const [cookies, setCookie] = useCookies(['user_id']);
 
@@ -30,31 +30,37 @@ const LoginForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <div>
-                <label htmlFor="user_id">Username:</label>
-                <input
-                    type="text"
-                    id="user_id"
-                    name="user_id"
-                    value={credentials.user_id}
-                    onChange={handleInputChange}
-                    autoComplete='user_id'
-                />
-            </div>
-            <div>
-                <label htmlFor="user_pw">Password:</label>
-                <input
-                    type="password"
-                    id="user_pw"
-                    name="user_pw"
-                    value={credentials.user_pw}
-                    onChange={handleInputChange}
-                    autoComplete='current-password'
-                />
-            </div>
-            <button type="submit">Login</button>
-        </form>
+        <div>
+            <form onSubmit={handleSubmit}>
+                <div>
+                    <label htmlFor="user_id">Username:</label>
+                    <input
+                        type="text"
+                        id="user_id"
+                        name="user_id"
+                        value={credentials.user_id}
+                        onChange={handleInputChange}
+                        autoComplete='user_id'
+                    />
+                </div>
+                <div>
+                    <label htmlFor="user_pw">Password:</label>
+                    <input
+                        type="password"
+                        id="user_pw"
+                        name="user_pw"
+                        value={credentials.user_pw}
+                        onChange={handleInputChange}
+                        autoComplete='current-password'
+                    />
+                </div>
+                <button type="submit">Login</button>
+
+            </form>
+            <button onClick={closeModal}>닫기</button>
+        </div >
+
+
     );
 };
 
