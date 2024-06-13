@@ -19,11 +19,10 @@ function Login() {
 
         try {
             const response = await fetch('http://localhost:8080/api/login_process', requestOptions);
-            const result = await response.text();
-            console.log(result)
-            if (result === "success") {
+            console.log(response)
+            if (result != null) {
                 alert("로그인이 성공했습니다.");
-                window.location.href = '/Dashboard'
+                window.location.href = '/Newspage'
             } else {
                 alert("로그인에 실패했습니다. 아이디와 비밀번호를 확인해주세요");
             }

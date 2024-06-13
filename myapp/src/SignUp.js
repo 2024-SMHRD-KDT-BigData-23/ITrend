@@ -27,8 +27,8 @@ function Signup() {
 
         try {
             const response = await fetch('http://localhost:8080/api/signup_process', requestOptions);
-            const result = await response.json();
-            console.log(result);
+            
+            console.log(response);
         } catch (error) {
             console.error('Error signing up:', error);
         }
