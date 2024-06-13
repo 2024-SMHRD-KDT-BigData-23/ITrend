@@ -20,6 +20,8 @@ import { faMagnifyingGlass, faSliders, faPlus, faMinus } from '@fortawesome/free
 
 남은 기능 1/3 완료!
 
+남은 기능 2/3 완료!
+
 // Chart.js의 구성 요소를 등록합니다.
 ChartJS.register(
     CategoryScale,
