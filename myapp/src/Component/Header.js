@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faChartSimple, faUser } from '@fortawesome/free-solid-svg-icons';
-import Modal from 'react-modal';
 import Login from '../Login';
 import './Header.css';
 
