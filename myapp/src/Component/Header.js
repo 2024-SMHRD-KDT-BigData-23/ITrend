@@ -1,22 +1,27 @@
-import React, { useState, useEffect } from "react";
-import { Route, Routes, BrowserRouter, Link } from 'react-router-dom';
-import Login from '../Login';
-
-import Newspage from '../Newspage';
-import PrivateRoute from '../PrivateRoute';
+import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faChartSimple, faUser } from '@fortawesome/free-solid-svg-icons';
+import Modal from 'react-modal';
+import Login from '../Login';
 import './Header.css';
 
 const Header = () => {
-
     const [modalOpen, setModalOpen] = useState(false);
+    const navigate = useNavigate();
 
-    const openModal = () => setModalOpen(true);
-    const closeModal = () => setModalOpen(false);
+    const openModal = () => {
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+    };
 
     return (
         <div>
+
+
             <header id='header' className='mainHeader'>
                 <h1>
                     <a href='#'>
@@ -26,13 +31,13 @@ const Header = () => {
                 <nav>
                     <ul>
                         <li>
-                            <button id="headerMap">
+                            <button id="headerMap" onClick={() => navigate('/KakaoMap')}>
                                 <FontAwesomeIcon icon={faLocationDot} className='icon' />
                                 <span>지도 홈</span>
                             </button>
                         </li>
                         <li>
-                            <button id="headerAnalysis">
+                            <button id="headerAnalysis" onClick={() => navigate('/Newspage')}>
                                 <FontAwesomeIcon icon={faChartSimple} className='icon' />
                                 <span>데이터 분석</span>
                             </button>
@@ -44,6 +49,7 @@ const Header = () => {
                         <FontAwesomeIcon icon={faUser} className='icon' />
                     </button>
                 </div>
+
             </header>
             {modalOpen && (
                 <div className="modal-overlay2" onClick={closeModal}>
@@ -52,8 +58,8 @@ const Header = () => {
                     </div>
                 </div>
             )}
-        </div>
 
+        </div>
     );
 }
 

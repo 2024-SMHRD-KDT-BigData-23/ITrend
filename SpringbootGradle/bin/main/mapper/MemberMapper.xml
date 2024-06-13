@@ -9,7 +9,7 @@
     
 	<insert id="signupMember" parameterType="com.smhrd.gradle.vo.Member">
         INSERT INTO t_user (user_id, user_pw, user_name, user_birthdate, user_gender, user_loc, user_phone)
-        VALUES (#{user_id}, #{user_pw}, #{user_name}, #{user_birthdate}, #{user_gender}, #{user_loc}, #{user_phone})
+        VALUES (#{user_id}, MD5(#{user_pw}), #{user_name}, #{user_birthdate}, #{user_gender}, #{user_loc}, #{user_phone})
     </insert>
     
     
