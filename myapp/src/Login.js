@@ -58,7 +58,7 @@ const Login = ({ closeModal }) => {
                 <div style={{ display: "flex", width: "100%", height: "20%", border: "1px solid red" }}>
                     <img src='/images/ITLOGO.png' style={{ flex: "0 0 30%", height: "auto" }} alt="ITrend Logo"></img>
                     {/* 여기 이미지 태그로 바꾸기 */}
-                    <div style={{ flex: 1, backgroundColor: "red" }}></div>
+                    <img src='/images/ITLOGO2.png' style={{ flex: 1}} alt='ITrend Text'></img>
                 </div>
                 {!isSignUp ? (
 
