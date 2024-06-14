@@ -1,8 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from './Login';
-import Signup from './SignUp';
-import Newspage from './Newspage';
+import Analysispage from './Analysispage';
 import PrivateRoute from './PrivateRoute';
 import Header from './Component/Header';
 import KakaoMap from './Component/KakaoMap';
@@ -16,11 +14,9 @@ function App() {
                     <Header />
                     <Routes>
                         <Route path="/" element={<KakaoMap />} />
-                        <Route path="/signup" element={<Signup />} />
-                        <Route path="/KakaoMap" element={<KakaoMap />} />
-                        <Route path="/Newspage" element={
+                        <Route path="/Analysispage" element={
                             <PrivateRoute>
-                                <Newspage />
+                                <Analysispage />
                             </PrivateRoute>
                         } />
                     </Routes>

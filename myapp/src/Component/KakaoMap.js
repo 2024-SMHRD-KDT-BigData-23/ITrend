@@ -15,7 +15,6 @@ import {
 import _ from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faSliders, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
-import { ClipLoader } from 'react-spinners';
 
 // Chart.js의 구성 요소를 등록합니다.
 ChartJS.register(
@@ -44,7 +43,6 @@ const KakaoMap = () => {
 
     const [currentOptions, setCurrentOptions] = useState({});// 현재 필터옵션을 저장할 변수
     const [selectedOptions, setSelectedOptions] = useState([]);
-    const [loading, setLoading] = useState(true); // 로딩 상태 관리
 
 
     const handleSkillsClick = () => {
@@ -496,6 +494,15 @@ const KakaoMap = () => {
         }
     };
 
+    const openUrl = (url) => {
+        // URL이 http:// 또는 https://로 시작하지 않는 경우 http://를 추가
+        if (!/^https?:\/\//i.test(url)) {
+            url = `http://${url}`;
+        }
+        window.open(url, '_blank', 'noopener noreferrer');
+    };
+
+
     return (
         <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
             <div div className='kakaoMap' id="map">
@@ -578,12 +585,13 @@ const KakaoMap = () => {
                     </div>
                 </div>
                 {recruitInfo && selectedPlace && (
-                    <div className='recruitInfo' style={{ display: 'flex', flexDirection: 'column', top: 0, left: 300, border: "1px solid black", position: "absolute", backgroundColor: "white", width: '25%', height: "100%", zIndex: 10 }}>
-                        <div className="tempRecruitHead" style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid #000' }}>
-                            <div style={{ flex: "1" }}>
-                                <span style={{ fontSize: '24px', fontWeight: 'bold' }}>{selectedPlace.title}</span>
+                    <div className='recruitInfo' style={{ display: 'flex', flexDirection: 'column', top: 0, left: 300, position: "absolute", backgroundColor: "white", width: '25%', height: "100%", zIndex: 10, padding: "5px" }}>
+                        <div className="recruitHead" style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <div style={{ display: "flex", flex: "1", alignItems: "center", gap: "10px" }}>
+                                <img src='/images/Note.png' alt='Note Icon' style={{ width: "30px", height: "auto" }}></img>
+                                <span style={{ fontSize: '28px', fontWeight: 'bold' }}>{selectedPlace.title}</span>
                             </div>
-                            <div style={{}}>
+                            <div>
                                 <button style={{ width: "30px", height: "30px", backgroundColor: 'white', zIndex: 10, border: "none" }} onClick={() => {
                                     setRecruitInfo(false);
                                     setSelectedPlace(null);
@@ -591,25 +599,108 @@ const KakaoMap = () => {
                             </div>
                         </div>
 
-                        <div className='tempRcruitNeck' style={{ height: '10px', backgroundColor: "green" }}></div>
+                        <div className='rcruitNeck' style={{ height: '10px', backgroundColor: "#A7E6FF", flexShrink: 0 }}></div>
 
-                        <div className='tempRecruitBody' style={{ flexGrow: "1", position: "relative", border: '1px solid', marginTop: '5px', padding: "5px", overflowY: 'auto' }}>
-                            < p > <strong>기업명:</strong> {selectedPlace.name}</p>
-                            <p><strong>지역:</strong> {selectedPlace.region}</p>
-                            <p><strong>직무:</strong> {selectedPlace.job}</p>
-                            <p><strong>경력:</strong> {selectedPlace.carrer}</p>
-                            <p><strong>기술스택:</strong> {selectedPlace.skills}</p>
-                            <p><strong>기업소개:</strong> {selectedPlace.info}</p>
-                            <p><strong>하는 일:</strong> {selectedPlace.work}</p>
-                            <p><strong>자격조건:</strong> {selectedPlace.license}</p>
-                            <p><strong>우대사항:</strong> {selectedPlace.preference}</p>
-                            <p><strong>지원절차:</strong> {selectedPlace.job_process}</p>
-                            <p><strong>상세주소:</strong> {selectedPlace.address}</p>
-                            <p><strong>공고마감날짜:</strong> {selectedPlace.deadline_at}</p>
+                        <div className='recruitBody' style={{ display: "flex", flexDirection: "column", flexGrow: "1", position: "relative", padding: "5px", overflowY: 'auto', border: "1px solid #A7E6FF", marginTop: "5px", marginBottom: "5px" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                    <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
+                                    <strong style={{ fontSize: "20px"}}>기업명</strong>
+                            </div>
+                            <div>
+                                <p> {selectedPlace.name}</p>
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
+                                <strong style={{ fontSize: "20px" }}>지역</strong>
+                            </div>
+                            <div>
+                                <p>{selectedPlace.region}</p>
+                            </div>
+
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
+                                <strong style={{ fontSize: "20px" }}>직무</strong>
+                            </div>
+                            <div>
+                                <p>{selectedPlace.job}</p>
+                            </div>
+
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
+                                <strong style={{ fontSize: "20px" }}>경력</strong>
+                            </div>
+                            <div>
+                                <p>{selectedPlace.carrer}</p>
+                            </div>
+
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
+                                <strong style={{ fontSize: "20px" }}>기술스택</strong>
+                            </div>
+                            <div>
+                                <p>{selectedPlace.skills}</p>
+                            </div>
+
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
+                                <strong style={{ fontSize: "20px" }}>기업소개</strong>
+                            </div>
+                            <div>
+                                <p>{selectedPlace.info}</p>
+                            </div>
+
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
+                                <strong style={{ fontSize: "20px" }}>하시는 일</strong>
+                            </div>
+                            <div>
+                                <p>{selectedPlace.work}</p>
+                            </div>
+
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
+                                <strong style={{ fontSize: "20px" }}>자격조건</strong>
+                            </div>
+                            <div>
+                                <p>{selectedPlace.license}</p>
+                            </div>
+
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
+                                <strong style={{ fontSize: "20px" }}>우대사항</strong>
+                            </div>
+                            <div>
+                                <p>{selectedPlace.preference}</p>
+                            </div>
+
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
+                                <strong style={{ fontSize: "20px" }}>지원절차</strong>
+                            </div>
+                            <div>
+                                <p>{selectedPlace.job_process}</p>
+                            </div>
+
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
+                                <strong style={{ fontSize: "20px" }}>상세주소</strong>
+                            </div>
+                            <div>
+                                <p>{selectedPlace.address}</p>
+                            </div>
+
+                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
+                                <strong style={{ fontSize: "20px" }}>공고마감날짜</strong>
+                            </div>
+                            <div>
+                                <p>{selectedPlace.deadline_at}</p>
+                            </div>
+
                         </div>
 
-                        <div className='tempRecruitFoot' style={{ display: "flex", justifyContent: "center", alignItems: "center", flexShrink: 0, height: "100px", backgroundColor: "#A7E6FF" }}>
-                            <button type='button' onClick={() => window.open('https://www.naver.com', '_blank')} style={{ whiteSpace: "nowrap", overflow: "hidden", width: "100%", height: "100%", fontSize: "30px", border:"none", backgroundColor:"#A7E6FF", color:"white", fontWeight:"bold" }}>홈페이지 이동</button>
+                        <div className='recruitFoot' style={{ display: "flex", justifyContent: "center", alignItems: "center", flexShrink: 0, height: "100px", backgroundColor: "#A7E6FF" }}>
+                            <button type='button' onClick={() => openUrl(selectedPlace.url)} style={{ whiteSpace: "nowrap", overflow: "hidden", width: "100%", height: "100%", fontSize: "30px", border: "none", backgroundColor: "#A7E6FF", color: "white", fontWeight: "bold" }}>홈페이지 이동</button>
                         </div>
                     </div>
                 )
