@@ -1,6 +1,8 @@
 /* global kakao */
 import React, { useState, useEffect } from 'react';
 import "./KakaoMap.css";
+import RecruitInfo from './kakaoComponent/RecruitInfo';
+import RecruitList from './kakaoComponent/RecruitList';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -506,7 +508,7 @@ const KakaoMap = () => {
     return (
         <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
             <div div className='kakaoMap' id="map">
-                <div className='mapInfo' style={{ position: "relative", backgroundColor: "white", width: '300px', height: "100%", zIndex: 10 }}>
+                <div className='mapInfo' style={{ position: "relative", backgroundColor: "white", width: '400px', height: "100%", zIndex: 10 }}>
                     <div className="searchBox" style={{ height: "90px", width: "100%", position: 'relative', backgroundColor: 'white', padding: "5px" }}>
                         <div className='sarchInput' style={{ width: "100%", height: "60%", border: "2px solid #A7E6FF" }}>
                             <input value={keyword} onChange={handleChange} placeholder="장소를 검색하세요." id="keyword" size="15" style={{ border: "none", width: "80%", height: "100%", paddingLeft: "10px" }} />
@@ -521,188 +523,23 @@ const KakaoMap = () => {
                             </button>
                         </div>
 
-                        <div className='mapRecruitList' style={{ display: "flex", width: "100%", height: "100vh", marginTop: "10px", borderTop: "1px solid black" }}>
-                            {showCluster ? (
-                                <div id="cluster_menu_wrap" className="bg_white" style={{ maxHeight: '100vh', overflowY: 'auto', backgroundColor: 'white', marginTop: "10px" }}>
-                                    <ul id="clusterPlacesList" style={{ listStyleType: "none", padding: "5px" }}>
-                                        {clusterMarkers.map((place, index) => (
-                                            <li key={index} className="item" onClick={() => handlePlaceClick(place)}>
-                                                <div className="info" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black" }}>
-                                                        <h4>{place.title}</h4>
-                                                    </div>
-                                                    <div className='placeHeader' style={{ display: "flex" }}>
-                                                        <div style={{ flex: "0 0 60%", width: "60%", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black", marginRight: "10px" }}>
-                                                            <span style={{ textDecoration: 'underline', textDecorationSkipInk: 'none' }} className={`markerbg marker_${index + 1}`}>{place.name}</span>
-                                                        </div>
-                                                        <div style={{ flex: "1", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                            <sapn>{place.job}</sapn>
-                                                        </div>
-                                                    </div>
-                                                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                        <span>{place.address}</span>
-                                                    </div>
-                                                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                        <span>{place.skills}</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ) : (
-                                dbPlaces.length > 0 && (
-                                    <div id="db_menu_wrap" className="bg_white" style={{ maxHeight: '100%', overflowY: 'auto', backgroundColor: 'white', marginTop: "10px" }}>
-                                        <ul id="dbPlacesList" style={{ listStyleType: "none", paddingLeft: "5px" }}>
-                                            {dbPlaces.map((place, index) => (
-                                                <li key={index} className="item" onClick={() => handlePlaceClick(place)} style={{ listStyleType: "none" }}>
-                                                    <div className="info" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black" }}>
-                                                            <h4>{place.title}</h4>
-                                                        </div>
-                                                        <div className='placeHeader' style={{ display: "flex" }}>
-                                                            <div style={{ flex: "0 0 60%", width: "60%", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black", marginRight: "10px" }}>
-                                                                <span style={{ textDecoration: 'underline', textDecorationSkipInk: 'none' }} className={`markerbg marker_${index + 1}`}>{place.name}</span>
-                                                            </div>
-                                                            <div style={{ flex: "1", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                                <sapn>{place.job}</sapn>
-                                                            </div>
-                                                        </div>
-                                                        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                            <span>{place.address}</span>
-                                                        </div>
-                                                        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                            <span>{place.skills}</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )
-                            )}
-                        </div>
+                        <RecruitList
+                            showCluster={showCluster}
+                            clusterMarkers={clusterMarkers}
+                            dbPlaces={dbPlaces}
+                            handlePlaceClick={handlePlaceClick}
+                        />
+
+
                     </div>
                 </div>
                 {recruitInfo && selectedPlace && (
-                    <div className='recruitInfo' style={{ display: 'flex', flexDirection: 'column', top: 0, left: 300, position: "absolute", backgroundColor: "white", width: '25%', height: "100%", zIndex: 10, padding: "5px" }}>
-                        <div className="recruitHead" style={{ display: 'flex', justifyContent: 'space-between' }}>
-                            <div style={{ display: "flex", flex: "1", alignItems: "center", gap: "10px" }}>
-                                <img src='/images/Note.png' alt='Note Icon' style={{ width: "30px", height: "auto" }}></img>
-                                <span style={{ fontSize: '28px', fontWeight: 'bold' }}>{selectedPlace.title}</span>
-                            </div>
-                            <div>
-                                <button style={{ width: "30px", height: "30px", backgroundColor: 'white', zIndex: 10, border: "none" }} onClick={() => {
-                                    setRecruitInfo(false);
-                                    setSelectedPlace(null);
-                                }}>X</button>
-                            </div>
-                        </div>
-
-                        <div className='rcruitNeck' style={{ height: '10px', backgroundColor: "#A7E6FF", flexShrink: 0 }}></div>
-
-                        <div className='recruitBody' style={{ display: "flex", flexDirection: "column", flexGrow: "1", position: "relative", padding: "5px", overflowY: 'auto', border: "1px solid #A7E6FF", marginTop: "5px", marginBottom: "5px" }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                    <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
-                                    <strong style={{ fontSize: "20px"}}>기업명</strong>
-                            </div>
-                            <div>
-                                <p> {selectedPlace.name}</p>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
-                                <strong style={{ fontSize: "20px" }}>지역</strong>
-                            </div>
-                            <div>
-                                <p>{selectedPlace.region}</p>
-                            </div>
-
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
-                                <strong style={{ fontSize: "20px" }}>직무</strong>
-                            </div>
-                            <div>
-                                <p>{selectedPlace.job}</p>
-                            </div>
-
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
-                                <strong style={{ fontSize: "20px" }}>경력</strong>
-                            </div>
-                            <div>
-                                <p>{selectedPlace.carrer}</p>
-                            </div>
-
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
-                                <strong style={{ fontSize: "20px" }}>기술스택</strong>
-                            </div>
-                            <div>
-                                <p>{selectedPlace.skills}</p>
-                            </div>
-
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
-                                <strong style={{ fontSize: "20px" }}>기업소개</strong>
-                            </div>
-                            <div>
-                                <p>{selectedPlace.info}</p>
-                            </div>
-
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
-                                <strong style={{ fontSize: "20px" }}>하시는 일</strong>
-                            </div>
-                            <div>
-                                <p>{selectedPlace.work}</p>
-                            </div>
-
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
-                                <strong style={{ fontSize: "20px" }}>자격조건</strong>
-                            </div>
-                            <div>
-                                <p>{selectedPlace.license}</p>
-                            </div>
-
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
-                                <strong style={{ fontSize: "20px" }}>우대사항</strong>
-                            </div>
-                            <div>
-                                <p>{selectedPlace.preference}</p>
-                            </div>
-
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
-                                <strong style={{ fontSize: "20px" }}>지원절차</strong>
-                            </div>
-                            <div>
-                                <p>{selectedPlace.job_process}</p>
-                            </div>
-
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
-                                <strong style={{ fontSize: "20px" }}>상세주소</strong>
-                            </div>
-                            <div>
-                                <p>{selectedPlace.address}</p>
-                            </div>
-
-                            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-                                <img src='/images/Check.png' alt='Check icon' style={{ width: "20px", height: "auto" }} />
-                                <strong style={{ fontSize: "20px" }}>공고마감날짜</strong>
-                            </div>
-                            <div>
-                                <p>{selectedPlace.deadline_at}</p>
-                            </div>
-
-                        </div>
-
-                        <div className='recruitFoot' style={{ display: "flex", justifyContent: "center", alignItems: "center", flexShrink: 0, height: "100px", backgroundColor: "#A7E6FF" }}>
-                            <button type='button' onClick={() => openUrl(selectedPlace.url)} style={{ whiteSpace: "nowrap", overflow: "hidden", width: "100%", height: "100%", fontSize: "30px", border: "none", backgroundColor: "#A7E6FF", color: "white", fontWeight: "bold" }}>홈페이지 이동</button>
-                        </div>
-                    </div>
+                    <RecruitInfo
+                        selectedPlace={selectedPlace}
+                        setRecruitInfo={setRecruitInfo}
+                        setSelectedPlace={setSelectedPlace}
+                        openUrl={openUrl}
+                    />
                 )
                 }
 
