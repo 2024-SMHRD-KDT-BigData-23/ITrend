@@ -15,6 +15,7 @@ import {
 import _ from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faSliders, faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
+import { ClipLoader } from 'react-spinners';
 
 // Chart.js의 구성 요소를 등록합니다.
 ChartJS.register(
@@ -43,6 +44,8 @@ const KakaoMap = () => {
 
     const [currentOptions, setCurrentOptions] = useState({});// 현재 필터옵션을 저장할 변수
     const [selectedOptions, setSelectedOptions] = useState([]);
+    const [loading, setLoading] = useState(true); // 로딩 상태 관리
+
 
     const handleSkillsClick = () => {
         setCurrentOptions(skillsOptions);
@@ -341,6 +344,7 @@ const KakaoMap = () => {
     };
 
     const fetchInitialPlaces = async (map) => {
+
         try {
             const response = await axios.post('http://localhost:8080/api/RDload');
             const placesFromDb = Array.isArray(response.data) ? response.data : [];
@@ -494,7 +498,7 @@ const KakaoMap = () => {
 
     return (
         <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
-            <div className='kakaoMap' id="map">
+            <div div className='kakaoMap' id="map">
                 <div className='mapInfo' style={{ position: "relative", backgroundColor: "white", width: '300px', height: "100%", zIndex: 10 }}>
                     <div className="searchBox" style={{ height: "90px", width: "100%", position: 'relative', backgroundColor: 'white', padding: "5px" }}>
                         <div className='sarchInput' style={{ width: "100%", height: "60%", border: "2px solid #A7E6FF" }}>
@@ -574,35 +578,39 @@ const KakaoMap = () => {
                     </div>
                 </div>
                 {recruitInfo && selectedPlace && (
-                    <div className='recruitInfo' style={{ top: 0, left: 300, border: "1px solid black", position: "absolute", backgroundColor: "white", width: '25%', height: "100%", zIndex: 10 }}>
-
-                        <div className="tempRecruitHead" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #000' }}>
-                            <span style={{ fontSize: '24px', fontWeight: 'bold', textDecoration: 'underline' }}>Recruit Information</span>
-                            <button style={{ width: "30px", height: "30px", backgroundColor: 'white', zIndex: 10, border: '1px solid #ccc' }} onClick={() => {
-                                setRecruitInfo(false);
-                                setSelectedPlace(null);
-                            }}>X</button>
+                    <div className='recruitInfo' style={{ display: 'flex', flexDirection: 'column', top: 0, left: 300, border: "1px solid black", position: "absolute", backgroundColor: "white", width: '25%', height: "100%", zIndex: 10 }}>
+                        <div className="tempRecruitHead" style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid #000' }}>
+                            <div style={{ flex: "1" }}>
+                                <span style={{ fontSize: '24px', fontWeight: 'bold' }}>{selectedPlace.title}</span>
+                            </div>
+                            <div style={{}}>
+                                <button style={{ width: "30px", height: "30px", backgroundColor: 'white', zIndex: 10, border: "none" }} onClick={() => {
+                                    setRecruitInfo(false);
+                                    setSelectedPlace(null);
+                                }}>X</button>
+                            </div>
                         </div>
 
                         <div className='tempRcruitNeck' style={{ height: '10px', backgroundColor: "green" }}></div>
 
-                        <div className='tempRecruitBody' style={{ position: "relative", maxHeight: "100%", border: '1px solid', marginTop: '5px', padding: "5px", overflowY: 'auto' }}>
-                            < p > <strong>Name:</strong> {selectedPlace.name}</p>
-                            <p><strong>Region:</strong> {selectedPlace.region}</p>
-                            <p><strong>Job:</strong> {selectedPlace.job}</p>
-                            <p><strong>Carrer:</strong> {selectedPlace.carrer}</p>
-                            <p><strong>Skills:</strong> {selectedPlace.skills}</p>
-                            <p><strong>Info:</strong> {selectedPlace.info}</p>
-                            <p><strong>Work:</strong> {selectedPlace.work}</p>
-                            <p><strong>License:</strong> {selectedPlace.license}</p>
-                            <p><strong>Preference:</strong> {selectedPlace.preference}</p>
-                            <p><strong>Job Process:</strong> {selectedPlace.job_process}</p>
-                            <p><strong>Address:</strong> {selectedPlace.address}</p>
-                            <p><strong>Deadline:</strong> {selectedPlace.deadline_at}</p>
-                            <p><strong>Latitude:</strong> {selectedPlace.latitude}</p>
-                            <p><strong>Longitude:</strong> {selectedPlace.longitude}</p>
+                        <div className='tempRecruitBody' style={{ flexGrow: "1", position: "relative", border: '1px solid', marginTop: '5px', padding: "5px", overflowY: 'auto' }}>
+                            < p > <strong>기업명:</strong> {selectedPlace.name}</p>
+                            <p><strong>지역:</strong> {selectedPlace.region}</p>
+                            <p><strong>직무:</strong> {selectedPlace.job}</p>
+                            <p><strong>경력:</strong> {selectedPlace.carrer}</p>
+                            <p><strong>기술스택:</strong> {selectedPlace.skills}</p>
+                            <p><strong>기업소개:</strong> {selectedPlace.info}</p>
+                            <p><strong>하는 일:</strong> {selectedPlace.work}</p>
+                            <p><strong>자격조건:</strong> {selectedPlace.license}</p>
+                            <p><strong>우대사항:</strong> {selectedPlace.preference}</p>
+                            <p><strong>지원절차:</strong> {selectedPlace.job_process}</p>
+                            <p><strong>상세주소:</strong> {selectedPlace.address}</p>
+                            <p><strong>공고마감날짜:</strong> {selectedPlace.deadline_at}</p>
                         </div>
 
+                        <div className='tempRecruitFoot' style={{ display: "flex", justifyContent: "center", alignItems: "center", flexShrink: 0, height: "100px", backgroundColor: "#A7E6FF" }}>
+                            <button type='button' onClick={() => window.open('https://www.naver.com', '_blank')} style={{ whiteSpace: "nowrap", overflow: "hidden", width: "100%", height: "100%", fontSize: "30px", border:"none", backgroundColor:"#A7E6FF", color:"white", fontWeight:"bold" }}>홈페이지 이동</button>
+                        </div>
                     </div>
                 )
                 }
@@ -623,7 +631,7 @@ const KakaoMap = () => {
                                         직무
                                     </button>
                                 </div>
-                                <div className='checkBoxSpace' style={{ flexGrow: 1, overflowY: 'auto', marginBottom:"10px", marginTop:"10px"}}>
+                                <div className='checkBoxSpace' style={{ flexGrow: 1, overflowY: 'auto', marginBottom: "10px", marginTop: "10px" }}>
                                     {Object.keys(currentOptions).map(category => (
                                         <div key={category} style={{ marginBottom: '10px' }}>
                                             <strong>{category}</strong>
@@ -647,8 +655,8 @@ const KakaoMap = () => {
 
                                 <div className="modal-button" style={{ display: 'flex', justifyContent: 'flex-end', height: "30px" }}>
                                     {/* 카테고리 검색 버튼, 클릭 시 RDcategoryFind 함수 호출 */}
-                                    <button type='button' onClick={handleReset} style={{width:"10%", height:"100%", fontSize:"12px"}}>초기화</button>
-                                    <button onClick={RDcategoryFind} type="button" style={{ width: '10%', height: '100%', marginLeft:"10px", fontSize:"12px" }}>
+                                    <button type='button' onClick={handleReset} style={{ width: "10%", height: "100%", fontSize: "12px" }}>초기화</button>
+                                    <button onClick={RDcategoryFind} type="button" style={{ width: '10%', height: '100%', marginLeft: "10px", fontSize: "12px" }}>
                                         검색
                                     </button>
                                 </div>
@@ -699,8 +707,8 @@ const KakaoMap = () => {
                             map.setLevel(12);
                         }}>초기화면</button>
                     </div>)
-                }
-            </div >
+                };
+            </div>
         </div >
     );
 };

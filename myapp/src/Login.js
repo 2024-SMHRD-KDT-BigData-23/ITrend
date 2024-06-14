@@ -5,7 +5,7 @@ import { faUser, faKey } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import SignUp from './SignUp';
 import Swal from "sweetalert2";
-
+import './Login.css';
 
 const Login = ({ closeModal }) => {
     const [credentials, setCredentials] = useState({ user_id: '', user_pw: '' });
@@ -53,45 +53,49 @@ const Login = ({ closeModal }) => {
     };
 
     return (
-        <div className='loginInput' style={{ minHeight: "480px", display: "flex", justifyContent: "center", width: "100%", margin: "5px", padding: "5px", border: "1px solid black" }}>
-            <div style={{ minHeight: "475px", display: "flex", flexDirection: "column", width: "80%", height: "50vh", padding: "5px", border: "1px solid blue" }}>
-                <div style={{ display: "flex", width: "100%", height: "20%", border: "1px solid red" }}>
-                    <img src='/images/ITLOGO.png' style={{ flex: "0 0 30%", height: "auto" }} alt="ITrend Logo"></img>
-                    {/* 여기 이미지 태그로 바꾸기 */}
-                    <img src='/images/ITLOGO2.png' style={{ flex: 1}} alt='ITrend Text'></img>
+        <div className='loginInput'>
+            <div className='loginContainer'>
+                <div className='logoContainer'>
+                    <img src='/images/ITLOGO.png' className='logoImage' alt="ITrend Logo"></img>
+                    <img src='/images/ITLOGO2.png'className='logoImage2' alt="Text Logo"></img>
                 </div>
                 {!isSignUp ? (
-
-                    <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center" }}>
+                    <div className='formContainer'>
                         <form onSubmit={handleSubmit}>
-
-                            <div style={{ display: "flex", border: "1px solid #A7E6FF", height: "40px" }}>
-                                <label htmlFor="user_id" style={{ width: "30%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                    <FontAwesomeIcon icon={faUser} style={{ color: "#A7E6FF" }} />
+                            <div className='inputGroup'>
+                                <label htmlFor="user_id" className='labelContainer'>
+                                    <FontAwesomeIcon icon={faUser} className='icon' />
                                 </label>
-                                <input type="text" id="user_id" name="user_id" value={credentials.user_id}
+                                <input
+                                    type="text"
+                                    id="user_id"
+                                    name="user_id"
+                                    value={credentials.user_id}
                                     onChange={handleInputChange}
                                     autoComplete='user_id'
                                     placeholder='아이디'
-                                    style={{ flex: 1, border: "none", borderLeft: "1px solid #A7E6FF" }}
+                                    className='inputField'
                                 />
                             </div>
-                            <div style={{ display: "flex", border: "1px solid #A7E6FF", borderTop: "none", height: "40px" }}>
-                                <label htmlFor="user_pw" style={{ width: "30%", display: "flex", justifyContent: "center", alignItems: "center" }}>
-                                    <FontAwesomeIcon icon={faKey} style={{ color: "#A7E6FF" }} />
+                            <div className='inputGroup inputGroupTop'>
+                                <label htmlFor="user_pw" className='labelContainer'>
+                                    <FontAwesomeIcon icon={faKey} className='icon' />
                                 </label>
-                                <input type="password" id="user_pw" name="user_pw" value={credentials.user_pw}
+                                <input
+                                    type="password"
+                                    id="user_pw"
+                                    name="user_pw"
+                                    value={credentials.user_pw}
                                     onChange={handleInputChange}
                                     autoComplete='current-password'
                                     placeholder='비밀번호'
-                                    style={{ flex: 1, border: "none", borderLeft: "1px solid #A7E6FF" }}
+                                    className='inputField'
                                 />
                             </div>
-                            <button type="submit" style={{ width: "100%", height: "40px", background: "none", backgroundColor: "#A7E6FF", border: "1px solid #A7E6FF" }}>Login</button>
-
+                            <button type="submit" className='submitButton'>Login</button>
                         </form>
-                        <div style={{ display: "flex", justifyContent: "end", width: "100%", height: "30px" }}>
-                            <button style={{ border: "none", background: "none", cursor: "pointer", color: "blue", textDecoration: "underline" }} type="button" onClick={() => setIsSignUp(true)}>회원가입</button>
+                        <div className='backButtonContainer'>
+                            <button type="button" className='SignUpButton' onClick={() => setIsSignUp(true)}>회원가입</button>
                         </div>
                     </div>
                 ) : (
