@@ -1,3 +1,4 @@
+// JobRecommendationForm.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./Analysispage.css";
@@ -65,13 +66,13 @@ const JobRecommendationForm = () => {
         ],
         "Front-end": [
             "JavaScript", "TypeScript", "Kotlin", "Swift", "Objective_C", "Angular", "Flutter", "Ionic", "jQuery",
-            "OpenGL", "Qt", "React", "React Native", "Redux", "Unity", "Unreal", "Vue.js", "WebGL", "Webpack",
+            "OpenGL", "Qt", "React", "React Native", "Redux", "Unity", "Unreal", "Vue.js", "WebGL", "Webpack", "Android", "iOS",
             "Next_js"
         ],
         "Data&AI": [
             "R", "SAS", "SPSS", "PyTorch", "Django", "TensorFlow", "Keras", "Pandas", "Spark", "Hadoop", "Kubernetes",
             "Logstash", "Lucene", "Maven", "OpenCV", "Elasticsearch", "HBase", "AI", "neural", "Deep_Learning",
-            "Machine_Learning", "bigdata", "data_analysis", "NoSQL", "DB", "SAP", "data_labeling", "data_mining",
+            "DB", "bigdata", "data_analysis", "NoSQL", "Machine_Learning", "SAP", "data_labeling", "data_mining",
             "data_visualization", "DW", "ETL", "RDBMS", "text_mining", "DBMS"
         ]
     };
@@ -89,12 +90,12 @@ const JobRecommendationForm = () => {
             <div className="wordcloud-container">
                 <img src={`data:image/png;base64,${wordcloudImage}`} alt="Wordcloud" />
                 <div className="word-counts">
-                    <h4>단어 빈도수 순위 (상위 10개)</h4>
+                    <h4><strong>채용 인기 {selectedTab === 'skills' ? '기술스택' : '직무'} 순위</strong><img src='/images/Rankicon.png' alt='Rankicon' /></h4>
                     <ul>
                         {sortedWordCounts.map(([word, data]) => (
                             <li key={word}>
                                 <span>{data.rank}. {word}</span>
-                                <span> - 빈도수: {data.count}</span>
+                                <span> + {data.count}</span>
                             </li>
                         ))}
                     </ul>
@@ -118,7 +119,6 @@ const JobRecommendationForm = () => {
                             key={category}
                             className={`recommendations-category ${selectedCategoryTab === category ? 'active' : 'hidden'}`}
                         >
-                            <h3>{category}</h3>
                             {skills.map((skill) => (
                                 <label key={skill}>
                                     <input

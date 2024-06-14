@@ -17,8 +17,14 @@
     padding: 2rem;
 }
 
-.wordcloud-container img {
+.wordcloud-container img:first-child {
     padding-left: 100px;
+}
+
+.word-counts img {
+    width: 32px;
+    height: auto;
+    padding-Bottom:5px;
 }
 
 .word-counts {
@@ -29,7 +35,7 @@
 
 .word-counts h4 {
     padding-bottom: 50px;
-
+    padding-left: 38px;
 }
 
 .word-counts ul {
@@ -40,12 +46,16 @@
 }
 
 .word-counts li {
+    display: flex;
+    justify-content: space-between;
     margin-bottom: 5px;
     /* 리스트 아이템 아래 여백 설정 */
     border-bottom: 1px solid #e0e0e0;
     /* 연한 선 추가 */
     padding-bottom: 7px;
     /* 선과 아이템 사이 간격 설정 */
+    padding: 5px 0;
+    min-width: 320px;
 }
 
 .word-counts li:last-child {
@@ -54,9 +64,10 @@
 }
 
 .word-counts li span:last-child {
-    color: #a5a5a5;
+    color: #36aad8;
     padding-left: 10px;
 }
+
 
 .wordcloud-tabs {
     top: 0;
@@ -87,35 +98,46 @@
     transform: translateY(-2px);
     /* 호버 시 약간 위로 이동하는 효과 */
 }
+.analysis-container button.active {
+    background-color: #388bc4;
+    transform: translateY(-2px);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
+}
 
 .recommendations-container {
     display: flex;
     /* Flexbox 사용 */
     align-items: center;
     /* 세로 정렬 설정 (필요에 따라 조정 가능) */
+    
 }
 
 .recommendations-container form {
     background-color: #FFF;
-    margin-top: 50px;
-    margin-bottom: 50px;
     width: 50%;
     height: 100%;
+    padding-top: 15px;
+    max-height: 370px;
+    
 }
 
 form div label {
-    width: calc(20% - 9px);
+    width: calc(25% - 10px);
     /* 체크박스 너비 설정 (2개씩 배치) */
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
     /* 체크박스 아래 여백 설정 */
 }
 
 .analysis-container .recommendations {
     background-color: #FFF;
     margin-left: 50px;
-
+    min-height: 122px;
 }
-
+.analysis-container form button{
+    margin-left: 250px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
 .recommendations-wrap {
     width: 50%;
     height: 100%;
@@ -123,7 +145,7 @@ form div label {
 
 .category-tabs {
     display: flex;
-    margin-top: 100px;
+    margin-top: 50px;
 }
 
 .category-tabs-button {
@@ -145,10 +167,16 @@ form div label {
 .recommendations-category {
     display: none;
     padding: 20px;
-    border: 1px solid #ccc;
     background-color: #fff;
+    overflow-y: scroll;
+    max-height: 280px;
 }
 
 .recommendations-category.active {
     display: block;
+    overflow-y: scroll;
+    border-bottom: 2px solid #ebebeb;
+}
+.recommendations-category.active h3{
+    display: none;
 }
