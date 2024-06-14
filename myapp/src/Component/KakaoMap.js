@@ -1,6 +1,8 @@
 /* global kakao */
 import React, { useState, useEffect } from 'react';
 import "./KakaoMap.css";
+import RecruitInfo from './kakaoComponent/RecruitInfo';
+import RecruitList from './kakaoComponent/RecruitList';
 import axios from 'axios';
 import { Bar } from 'react-chartjs-2';
 import {
@@ -43,6 +45,7 @@ const KakaoMap = () => {
 
     const [currentOptions, setCurrentOptions] = useState({});// 현재 필터옵션을 저장할 변수
     const [selectedOptions, setSelectedOptions] = useState([]);
+
 
     const handleSkillsClick = () => {
         setCurrentOptions(skillsOptions);
@@ -341,6 +344,7 @@ const KakaoMap = () => {
     };
 
     const fetchInitialPlaces = async (map) => {
+
         try {
             const response = await axios.post('http://localhost:8080/api/RDload');
             const placesFromDb = Array.isArray(response.data) ? response.data : [];
@@ -492,10 +496,19 @@ const KakaoMap = () => {
         }
     };
 
+    const openUrl = (url) => {
+        // URL이 http:// 또는 https://로 시작하지 않는 경우 http://를 추가
+        if (!/^https?:\/\//i.test(url)) {
+            url = `http://${url}`;
+        }
+        window.open(url, '_blank', 'noopener noreferrer');
+    };
+
+
     return (
         <div style={{ position: 'relative', width: '100%', height: '100vh' }}>
-            <div className='kakaoMap' id="map">
-                <div className='mapInfo' style={{ position: "relative", backgroundColor: "white", width: '300px', height: "100%", zIndex: 10 }}>
+            <div div className='kakaoMap' id="map">
+                <div className='mapInfo' style={{ position: "relative", backgroundColor: "white", width: '400px', height: "100%", zIndex: 10 }}>
                     <div className="searchBox" style={{ height: "90px", width: "100%", position: 'relative', backgroundColor: 'white', padding: "5px" }}>
                         <div className='sarchInput' style={{ width: "100%", height: "60%", border: "2px solid #A7E6FF" }}>
                             <input value={keyword} onChange={handleChange} placeholder="장소를 검색하세요." id="keyword" size="15" style={{ border: "none", width: "80%", height: "100%", paddingLeft: "10px" }} />
@@ -510,100 +523,23 @@ const KakaoMap = () => {
                             </button>
                         </div>
 
-                        <div className='mapRecruitList' style={{ display: "flex", width: "100%", height: "100vh", marginTop: "10px", borderTop: "1px solid black" }}>
-                            {showCluster ? (
-                                <div id="cluster_menu_wrap" className="bg_white" style={{ maxHeight: '100vh', overflowY: 'auto', backgroundColor: 'white', marginTop: "10px" }}>
-                                    <ul id="clusterPlacesList" style={{ listStyleType: "none", padding: "5px" }}>
-                                        {clusterMarkers.map((place, index) => (
-                                            <li key={index} className="item" onClick={() => handlePlaceClick(place)}>
-                                                <div className="info" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black" }}>
-                                                        <h4>{place.title}</h4>
-                                                    </div>
-                                                    <div className='placeHeader' style={{ display: "flex" }}>
-                                                        <div style={{ flex: "0 0 60%", width: "60%", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black", marginRight: "10px" }}>
-                                                            <span style={{ textDecoration: 'underline', textDecorationSkipInk: 'none' }} className={`markerbg marker_${index + 1}`}>{place.name}</span>
-                                                        </div>
-                                                        <div style={{ flex: "1", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                            <sapn>{place.job}</sapn>
-                                                        </div>
-                                                    </div>
-                                                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                        <span>{place.address}</span>
-                                                    </div>
-                                                    <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                        <span>{place.skills}</span>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        ))}
-                                    </ul>
-                                </div>
-                            ) : (
-                                dbPlaces.length > 0 && (
-                                    <div id="db_menu_wrap" className="bg_white" style={{ maxHeight: '100%', overflowY: 'auto', backgroundColor: 'white', marginTop: "10px" }}>
-                                        <ul id="dbPlacesList" style={{ listStyleType: "none", paddingLeft: "5px" }}>
-                                            {dbPlaces.map((place, index) => (
-                                                <li key={index} className="item" onClick={() => handlePlaceClick(place)} style={{ listStyleType: "none" }}>
-                                                    <div className="info" style={{ overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black" }}>
-                                                            <h4>{place.title}</h4>
-                                                        </div>
-                                                        <div className='placeHeader' style={{ display: "flex" }}>
-                                                            <div style={{ flex: "0 0 60%", width: "60%", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', border: "1px solid black", marginRight: "10px" }}>
-                                                                <span style={{ textDecoration: 'underline', textDecorationSkipInk: 'none' }} className={`markerbg marker_${index + 1}`}>{place.name}</span>
-                                                            </div>
-                                                            <div style={{ flex: "1", whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                                <sapn>{place.job}</sapn>
-                                                            </div>
-                                                        </div>
-                                                        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                            <span>{place.address}</span>
-                                                        </div>
-                                                        <div style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                                            <span>{place.skills}</span>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            ))}
-                                        </ul>
-                                    </div>
-                                )
-                            )}
-                        </div>
+                        <RecruitList
+                            showCluster={showCluster}
+                            clusterMarkers={clusterMarkers}
+                            dbPlaces={dbPlaces}
+                            handlePlaceClick={handlePlaceClick}
+                        />
+
+
                     </div>
                 </div>
                 {recruitInfo && selectedPlace && (
-                    <div className='recruitInfo' style={{ top: 0, left: 300, border: "1px solid black", position: "absolute", backgroundColor: "white", width: '25%', height: "100%", zIndex: 10 }}>
-
-                        <div className="tempRecruitHead" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '2px solid #000' }}>
-                            <span style={{ fontSize: '24px', fontWeight: 'bold', textDecoration: 'underline' }}>Recruit Information</span>
-                            <button style={{ width: "30px", height: "30px", backgroundColor: 'white', zIndex: 10, border: '1px solid #ccc' }} onClick={() => {
-                                setRecruitInfo(false);
-                                setSelectedPlace(null);
-                            }}>X</button>
-                        </div>
-
-                        <div className='tempRcruitNeck' style={{ height: '10px', backgroundColor: "green" }}></div>
-
-                        <div className='tempRecruitBody' style={{ position: "relative", maxHeight: "100%", border: '1px solid', marginTop: '5px', padding: "5px", overflowY: 'auto' }}>
-                            < p > <strong>Name:</strong> {selectedPlace.name}</p>
-                            <p><strong>Region:</strong> {selectedPlace.region}</p>
-                            <p><strong>Job:</strong> {selectedPlace.job}</p>
-                            <p><strong>Carrer:</strong> {selectedPlace.carrer}</p>
-                            <p><strong>Skills:</strong> {selectedPlace.skills}</p>
-                            <p><strong>Info:</strong> {selectedPlace.info}</p>
-                            <p><strong>Work:</strong> {selectedPlace.work}</p>
-                            <p><strong>License:</strong> {selectedPlace.license}</p>
-                            <p><strong>Preference:</strong> {selectedPlace.preference}</p>
-                            <p><strong>Job Process:</strong> {selectedPlace.job_process}</p>
-                            <p><strong>Address:</strong> {selectedPlace.address}</p>
-                            <p><strong>Deadline:</strong> {selectedPlace.deadline_at}</p>
-                            <p><strong>Latitude:</strong> {selectedPlace.latitude}</p>
-                            <p><strong>Longitude:</strong> {selectedPlace.longitude}</p>
-                        </div>
-
-                    </div>
+                    <RecruitInfo
+                        selectedPlace={selectedPlace}
+                        setRecruitInfo={setRecruitInfo}
+                        setSelectedPlace={setSelectedPlace}
+                        openUrl={openUrl}
+                    />
                 )
                 }
 
@@ -623,7 +559,7 @@ const KakaoMap = () => {
                                         직무
                                     </button>
                                 </div>
-                                <div className='checkBoxSpace' style={{ flexGrow: 1, overflowY: 'auto', marginBottom:"10px", marginTop:"10px"}}>
+                                <div className='checkBoxSpace' style={{ flexGrow: 1, overflowY: 'auto', marginBottom: "10px", marginTop: "10px" }}>
                                     {Object.keys(currentOptions).map(category => (
                                         <div key={category} style={{ marginBottom: '10px' }}>
                                             <strong>{category}</strong>
@@ -647,8 +583,8 @@ const KakaoMap = () => {
 
                                 <div className="modal-button" style={{ display: 'flex', justifyContent: 'flex-end', height: "30px" }}>
                                     {/* 카테고리 검색 버튼, 클릭 시 RDcategoryFind 함수 호출 */}
-                                    <button type='button' onClick={handleReset} style={{width:"10%", height:"100%", fontSize:"12px"}}>초기화</button>
-                                    <button onClick={RDcategoryFind} type="button" style={{ width: '10%', height: '100%', marginLeft:"10px", fontSize:"12px" }}>
+                                    <button type='button' onClick={handleReset} style={{ width: "10%", height: "100%", fontSize: "12px" }}>초기화</button>
+                                    <button onClick={RDcategoryFind} type="button" style={{ width: '10%', height: '100%', marginLeft: "10px", fontSize: "12px" }}>
                                         검색
                                     </button>
                                 </div>
@@ -699,8 +635,8 @@ const KakaoMap = () => {
                             map.setLevel(12);
                         }}>초기화면</button>
                     </div>)
-                }
-            </div >
+                };
+            </div>
         </div >
     );
 };
