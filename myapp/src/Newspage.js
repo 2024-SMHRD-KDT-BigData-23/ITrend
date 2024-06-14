@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import "./Newspage.css"
 
 const JobRecommendationForm = () => {
     const [categories, setCategories] = useState([]);
@@ -29,8 +30,8 @@ const JobRecommendationForm = () => {
             const endpoint = tab === 'skills' ? 'http://localhost:8080/api/sdwordCloudfq' : 'http://localhost:8080/api/jobwordCloudfq';
             const response = await axios.post(endpoint);
             setWordFrequencies(response.data.word_counts_with_rank);
-            console.log("빈도수 : " , response.data.word_counts_with_rank);
-            
+            console.log("빈도수 : ", response.data.word_counts_with_rank);
+
         } catch (error) {
             console.error('Error generating wordcloudFrequency:', error);
         }
@@ -77,18 +78,18 @@ const JobRecommendationForm = () => {
     const sortedWordCounts = Object.entries(wordFrequencies)
         .sort(([, a], [, b]) => a.rank - b.rank)
         .slice(0, 10);
-        console.log(sortedWordCounts);
+    console.log(sortedWordCounts);
 
     return (
-        <div>
+        <div className = "analysis-container" >
             <div className="tabs">
                 <button onClick={() => handleTabChange('skills')} className={selectedTab === 'skills' ? 'active' : ''}>기술스택</button>
                 <button onClick={() => handleTabChange('jobs')} className={selectedTab === 'jobs' ? 'active' : ''}>직군</button>
-            </div>  
+            </div>
             <div className="wordcloud-container">
                 <img src={`data:image/png;base64,${wordcloudImage}`} alt="Wordcloud" />
                 <div className="word-counts">
-                    <h3>단어 빈도수 순위 (상위 10개)</h3>
+                    <h4>단어 빈도수 순위 (상위 10개)</h4>
                     <ul>
                         {sortedWordCounts.map(([word, data]) => (
                             <li key={word}>
@@ -99,38 +100,42 @@ const JobRecommendationForm = () => {
                     </ul>
                 </div>
             </div>
-            <form onSubmit={handleSubmit}>
-                {Object.entries(techStacks).map(([category, skills]) => (
-                    <div key={category}>
-                        <h3>{category}</h3>
-                        {skills.map(skill => (
-                            <label key={skill}>
-                                <input
-                                    type="checkbox"
-                                    value={skill}
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        if (e.target.checked) {
-                                            // 체크된 경우 해당 항목을 categories에 추가
-                                            setCategories([...categories, value]);
-                                        } else {
-                                            // 체크 해제된 경우 해당 항목을 categories에서 제거
-                                            setCategories(categories.filter(item => item !== value));
-                                        }
-                                    }}
-                                /> {skill}
-                            </label>
-                        ))}
-                    </div>
-                ))}
-                <button type="submit">Get Recommendations</button>
-            </form>
-            <div>
-                {recommendations.map((job, index) => (
-                    <div key={index}>{job}</div>
-                ))}
+            <div className="recommendations-container">
+                <form onSubmit={handleSubmit}>
+                    {Object.entries(techStacks).map(([category, skills]) => (
+                        <div key={category}>
+                                <h3>{category}</h3>
+                                {skills.map(skill => (
+                                    <label key={skill}>
+                                        <input
+                                            type="checkbox"
+                                            value={skill}
+                                            onChange={(e) => {
+                                                const value = e.target.value;
+                                                if (e.target.checked) {
+                                                    // 체크된 경우 해당 항목을 categories에 추가
+                                                    setCategories([...categories, value]);
+                                                } else {
+                                                    // 체크 해제된 경우 해당 항목을 categories에서 제거
+                                                    setCategories(categories.filter(item => item !== value));
+                                                }
+                                            }}
+                                        /> {skill}
+                                    </label>
+                                ))}
+
+                            </div>
+                    ))}
+                    <button type="submit">Get Recommendations</button>
+                </form>
+                <div className="recommendations-wrap">
+                    {recommendations.map((job, index) => (
+                        <div className="recommendations" key={index}>{job}</div>
+                    ))}
+                </div>
             </div>
-        </div>
+        </div >
+
     );
 };
 
