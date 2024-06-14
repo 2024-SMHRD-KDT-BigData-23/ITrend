@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faChartSimple, faUser } from '@fortawesome/free-solid-svg-icons';
-import Login from '../Login';
+import Login from './Login';
 import './Header.css';
 
 const Header = () => {
@@ -37,18 +37,18 @@ const Header = () => {
                     <ul>
                         <li>
                             <button id="headerMap"
-                                className={isActive('/KakaoMap') ? 'active' : ''}
-                                onClick={() => navigate('/KakaoMap')}>
+                                className={isActive('/') ? 'active' : ''}
+                                onClick={() => navigate('/')}>
                                 <FontAwesomeIcon icon={faLocationDot} className='icon' />
-                                <p className={isActive('/KakaoMap') ? 'active' : ''}>지도 홈</p>
+                                <p className={isActive('/') ? 'active' : ''}>지도 홈</p>
                             </button>
                         </li>
                         <li>
                             <button id="headerAnalysis"
-                                onClick={() => navigate('/Newspage')}
-                                className={isActive('/Newspage') ? 'active' : ''}>
+                                onClick={() => navigate('/Analysispage')}
+                                className={isActive('/Analysispage') ? 'active' : ''}>
                                 <FontAwesomeIcon icon={faChartSimple} className='icon' />
-                                <p className={isActive('/Newspage') ? 'active' : ''}>데이터 분석</p>
+                                <p className={isActive('/Analysispage') ? 'active' : ''}>데이터 분석</p>
                             </button>
                         </li>
                     </ul>

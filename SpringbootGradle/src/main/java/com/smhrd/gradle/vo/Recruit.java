@@ -38,4 +38,6 @@ public class Recruit {
 	private String latitude;
 	
 	private String longitude;
+	
+	private String url;
 }
