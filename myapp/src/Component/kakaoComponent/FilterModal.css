@@ -33,7 +33,30 @@
 
 .optionSpace {
     display: flex;
-    height: 30px;
+    height: 40px;
+}
+
+.filterButton {
+    
+    font-size: 16px;
+    padding: 0 10px;
+    border: 1px solid #A7E6FF;
+    border-radius: 20px;
+    background-color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 10px;
+    font-weight: 1000;
+}
+
+.filterButton:hover {
+    background-color: lightgray;
+}
+
+.selectedButton {
+    background-color: #A7E6FF;
+    color: white;
+
 }
 
 .checkBoxSpace {
@@ -46,6 +69,16 @@
 
 .categorySection {
     margin-bottom: 10px;
+}
+
+.categoryTitle {
+    padding-left: 10px;
+    color: white;
+    background-color: #A7E6FF;
+    font-size: 32px;
+    font-weight: bold;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .categoryOptions {
@@ -99,16 +132,26 @@
     height: 30px;
 }
 
-.modalButton #reset {
+.modalButton button {
     width: 10%;
     height: 100%;
+    border: none;
+    background-color: darkgreen;
+    transition: background-color 0.3s;
+}
+
+.modalButton button:hover{
+    background-color: navy
+}
+
+
+.modalButton #reset {
     font-size: 12px;
+    
 }
 
 .modalButton #search {
-    width: 10%;
-    height: 100%;
-    font-size: 12px;
+    font-size: 16px;
     margin-left: 10px;
 }
 
@@ -128,11 +171,14 @@
 /* 스크롤바 버튼 숨기기 */
 .checkBoxSpace::-webkit-scrollbar {
     width: 5px;
-    
+
 }
+
 .checkBoxSpace::-webkit-scrollbar-thumb {
-    height: 30%; /* 스크롤바의 길이 */
-    background: #A7E6FF; /* 스크롤바의 색상 */
-    
+    height: 30%;
+    /* 스크롤바의 길이 */
+    background: #A7E6FF;
+    /* 스크롤바의 색상 */
+
     border-radius: 10px;
 }

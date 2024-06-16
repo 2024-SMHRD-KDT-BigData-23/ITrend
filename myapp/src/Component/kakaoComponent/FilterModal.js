@@ -10,6 +10,7 @@ const FilterModal = ({
 }) => {
 
     const [currentOptions, setCurrentOptions] = useState({});
+    const [selectedButton, setSelectedButton] = useState('skills');
 
     // 검색 필터 목록
     const skillsOptions = {
@@ -56,11 +57,14 @@ const FilterModal = ({
 
     const handleSkillsClick = () => {
         setCurrentOptions(skillsOptions);
+        setSelectedButton('skills'); // 선택된 버튼 업데이트
     };
 
     const handleJobClick = () => {
         setCurrentOptions(jobOptions);
+        setSelectedButton('job'); // 선택된 버튼 업데이트
     };
+
     return (
         <div className="modalOverlay" onClick={toggleCheckboxes}>
             {/* 모달 외부 영역 클릭 시 toggleCheckboxes 호출 */}
@@ -68,17 +72,19 @@ const FilterModal = ({
                 {/* 모달 내부 클릭 시 이벤트 전파 방지 */}
                 <div className="modalInner">
                     <div className="optionSpace">
-                        <button type='button' onClick={handleSkillsClick}>
+                        <button type='button' onClick={handleSkillsClick}
+                            className={`filterButton ${selectedButton === 'skills' ? 'selectedButton' : ''}`}>
                             기술스택
                         </button>
-                        <button type='button' onClick={handleJobClick}>
+                        <button type='button' onClick={handleJobClick}
+                            className={`filterButton ${selectedButton === 'job' ? 'selectedButton' : ''}`}>
                             직무
                         </button>
                     </div>
                     <div className="checkBoxSpace">
                         {Object.keys(currentOptions).map(category => (
                             <div key={category} className="categorySection">
-                                <div className='categoryTitle' style={{ paddingLeft:"10px",color:"white",backgroundColor:"#A7E6FF",fontSize:"32px", fontWeight:"bold", borderTopLeftRadius:"10px", borderTopRightRadius:"10px"}}>{category}</div>
+                                <div className='categoryTitle' >{category}</div>
                                 <div className="categoryOptions">
                                     {currentOptions[category].map(option => (
                                         <label key={option} htmlFor={option} className="optionLabel">
