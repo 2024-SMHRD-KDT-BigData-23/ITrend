@@ -2,7 +2,16 @@ import React from 'react';
 import './RecruitInfo.css';
 import RecruitInfoSection from './RecruitSection';
 
-const RecruitInfo = ({ selectedPlace, setRecruitInfo, setSelectedPlace, openUrl }) => {
+const RecruitInfo = ({ selectedPlace, setRecruitInfo, setSelectedPlace }) => {
+    
+    const openUrl = (url) => {
+        // URL이 http:// 또는 https://로 시작하지 않는 경우 http://를 추가
+        if (!/^https?:\/\//i.test(url)) {
+            url = `http://${url}`;
+        }
+        window.open(url, '_blank', 'noopener noreferrer');
+    };
+
     return (
         <div className='recruitInfo'>
             <div className="recruitHead">
