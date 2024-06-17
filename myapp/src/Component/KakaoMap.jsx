@@ -10,6 +10,7 @@ import axios from 'axios';
 import _ from 'lodash';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMagnifyingGlass, faSliders } from '@fortawesome/free-solid-svg-icons';
+import { GridLoader } from 'react-spinners'; 
 
 const KakaoMap = () => {
     const [keyword, setKeyword] = useState(''); // 검색어 상태 관리
@@ -25,7 +26,7 @@ const KakaoMap = () => {
     const [showChart, setShowChart] = useState(false);
     const [barChartData, setBarChartData] = useState({ labels: [], datasets: [] }); // 클러스터러를 클릭 할 경우, bar chart의 skills 목록을 변경하기 위한 옵션
     const [jobChartData, setJobChartData] = useState({ labels: [], datasets: [] }); // 클러스터러를 클릭 할 경우, bar chart의 job 목록을 변경하기 위한 옵션
-
+    const [loading, setLoading] = useState(true);
     const [selectedOptions, setSelectedOptions] = useState([]);
 
 
@@ -52,31 +53,50 @@ const KakaoMap = () => {
     // key: 추출할 항목의 키 (예: 'skills' 또는 'job')
     // topN: 상위 몇 개의 항목을 추출할지 설정
     const extractTopItems = (markerInfos, key, topN) => {
-        // 중복된 항목을 제거하기 위해 Set을 사용
-        const itemSet = new Set();
+        // 각 항목의 등장 횟수를 저장할 객체
+        const itemCounts = {};
 
-        // 마커 정보 배열을 순회하며 key에 해당하는 값을 추출하여 Set에 추가
+        // 마커 정보 배열을 순회하며 key에 해당하는 값을 추출하고 등장 횟수를 계산
         markerInfos.forEach(info => {
             if (info[key]) {
-                info[key].split(', ').forEach(item => itemSet.add(item));
+                info[key].split(', ').forEach(item => {
+                    if (itemCounts[item]) {
+                        itemCounts[item]++;
+                    } else {
+                        itemCounts[item] = 1;
+                    }
+
+                    // "R"이라는 항목이 있는지 검사
+                    if (item === 'R') {
+                        console.log(`Found "R" in ${key} for marker:`, info);
+                    }
+                    
+                    if (item === 'Java') {
+                        console.log(`Found "Java" in ${key} for marker:`, info);
+                    }
+
+
+                });
             }
         });
 
-        // Set 객체를 배열로 변환
-        const itemArray = Array.from(itemSet);
+        // "R" 항목의 개수 출력
+        console.log(`Count of "R": ${itemCounts['R']}`);
+        console.log(`Count of "Java": ${itemCounts['Java']}`);
 
-        // 각 항목의 등장 횟수를 계산
-        const itemCount = itemArray.map(item => ({
+        // 각 항목과 그 등장 횟수를 배열 형태로 변환
+        const itemArray = Object.keys(itemCounts).map(item => ({
             item: item,
-            count: markerInfos.filter(info => info[key] && info[key].includes(item)).length
+            count: itemCounts[item]
         }));
 
         // 등장 횟수에 따라 내림차순으로 정렬
-        itemCount.sort((a, b) => b.count - a.count);
+        itemArray.sort((a, b) => b.count - a.count);
 
         // 상위 topN 개의 항목을 반환
-        return itemCount.slice(0, topN);
+        return itemArray.slice(0, topN);
     };
+
 
     // 클러스터 클릭 이벤트 핸들러
     const handleClusterClick = (cluster) => {
@@ -242,8 +262,10 @@ const KakaoMap = () => {
                     currentClusterer = createClusterer(map); // 클러스터러를 생성합니다
                 }
                 loadMarkers(placesFromDb, currentClusterer);
+                
             }
             setDbPlaces(placesFromDb);
+            setLoading(false);
         } catch (error) {
             console.error('Error fetching places from database', error);
         }
@@ -251,7 +273,11 @@ const KakaoMap = () => {
 
     // 장소 목록을 클릭했을 때 해당 장소로 이동하는 함수
     const handlePlaceClick = (place) => {
-        const placePosition = new kakao.maps.LatLng(place.latitude, place.longitude);
+        const placeLongitude = parseFloat(place.longitude);
+        const updatedLongitude = placeLongitude - 0.0014;
+        const placePosition = new kakao.maps.LatLng(place.latitude, updatedLongitude);
+        console.log(place.longitude);
+        console.log(placePosition);
         map.setCenter(placePosition);
         map.setLevel(1); // 지도의 확대 레벨을 1로 설정
         setSelectedPlace(place); // 선택된 장소 정보 설정
@@ -261,6 +287,7 @@ const KakaoMap = () => {
 
     // 지도 생성 함수
     const initMap = () => {
+
         const mapContainer = document.getElementById('map');
         const mapOption = {
             center: new kakao.maps.LatLng(36.5, 127.5), // 남한 중심 좌표
@@ -280,8 +307,17 @@ const KakaoMap = () => {
 
     // 컴포넌트가 처음 렌더링될 때 지도 생성 및 초기 데이터 로드
     useEffect(() => {
+
+        if (document.getElementById('kakao-map-script')) {
+            setKakaoLoaded(true);
+            const map = initMap();
+            fetchInitialPlaces(map); // Initial places fetch
+            return;
+        }
+
         // Load Kakao Maps API script dynamically
         const script = document.createElement('script');
+        script.id = 'kakao-map-script';
         script.src = `https://dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.REACT_APP_KAKAOMAP_KEY}&libraries=services,clusterer&autoload=false`;
         script.onload = () => {
             kakao.maps.load(() => {
@@ -295,12 +331,19 @@ const KakaoMap = () => {
         // Clean up function
         return () => {
             // Remove the dynamically added script when the component unmounts
-            document.head.removeChild(script);
+            if (document.getElementById('kakao-map-script')) {
+                document.head.removeChild(script);
+            }
         };
     }, []); // Empty dependency array to ensure it runs only once
 
     return (
         <div div className='kakaoMap' id="map">
+            {loading && ( // 로딩 중일 때 스피너 표시
+                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', position: 'absolute', width: '100%', zIndex: 100, background: 'rgba(255, 255, 255, 0.7)' }}>
+                    <GridLoader color="#A7E6FF" loading={loading} />
+                </div>
+            )}
             <div className='mapInfo'>
                 <div className="searchBox">
                     <div className='searchInput'>

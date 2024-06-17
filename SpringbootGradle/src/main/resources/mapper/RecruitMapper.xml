@@ -28,6 +28,7 @@
 
 	<select id="RDload" parameterType="java.lang.String" resultType="com.smhrd.gradle.vo.Recruit">
     SELECT * FROM t_recruit
+    WHERE deadline_at > NOW()
     </select>
     
     <update id="updateLatLng" parameterType="java.lang.String">

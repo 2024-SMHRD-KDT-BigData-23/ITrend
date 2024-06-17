@@ -33,7 +33,10 @@ const MapControls = ({ map }) => {
                 <FontAwesomeIcon icon={faMinus} className='icon' />
             </button>
             {/* 지도 초기화 버튼 */}
-            <button type='button' id="reset" onClick={resetMap}>Reset</button>
+            <button type='button' id="reset" onClick={resetMap}>
+                <img src="\images\reset.png"/>
+            </button>
+
         </div>
     );
 };

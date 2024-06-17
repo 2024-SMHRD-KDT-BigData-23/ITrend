@@ -37,7 +37,7 @@
 }
 
 .filterButton {
-    
+
     font-size: 16px;
     padding: 0 10px;
     border: 1px solid #A7E6FF;
@@ -136,22 +136,23 @@
     width: 10%;
     height: 100%;
     border: none;
-    background-color: darkgreen;
+    background-color: #A7E6FF;
+    color: white;
     transition: background-color 0.3s;
 }
 
-.modalButton button:hover{
-    background-color: navy
+.modalButton button:hover {
+    color: black;
 }
 
 
 .modalButton #reset {
     font-size: 12px;
-    
+
 }
 
 .modalButton #search {
-    font-size: 16px;
+    font-size: 12px;
     margin-left: 10px;
 }
 
