@@ -122,7 +122,7 @@ button#headerAnalysis span {
 
 /* ----------Header 영역 ---------------  */
 /* Modal.css */
-.modal-overlay2 {
+.modalOverlay2 {
   position: fixed;
   top: 0;
   left: 0;
@@ -138,7 +138,7 @@ button#headerAnalysis span {
   /* 높은 z-index 값으로 다른 요소 위에 표시 */
 }
 
-.modal-content2 {
+.modalContent2 {
   background-color: white;
   padding: 20px;
   border-radius: 5px;

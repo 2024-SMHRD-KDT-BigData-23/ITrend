@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import "./Analysispage.css";
-import "./Component/Header.css"
+import "./Component/Header.css";
 import Login from './Component/Login';  // Assuming you have a Login component
 
 const JobRecommendationForm = () => {
@@ -96,14 +96,14 @@ const JobRecommendationForm = () => {
 
     return (
         <>
-            <div className={`analysis-container ${isAuthenticated ? '' : 'blurred'}`}>
-                <div className="wordcloud-tabs">
+            <div className={`analysisContainer ${isAuthenticated ? '' : 'blurred'}`}>
+                <div className="wordcloudTabs">
                     <button onClick={() => handleTabChange('skills')} className={selectedTab === 'skills' ? 'active' : ''}>기술스택</button>
                     <button onClick={() => handleTabChange('jobs')} className={selectedTab === 'jobs' ? 'active' : ''}>직군</button>
                 </div>
-                <div className="wordcloud-container">
+                <div className="wordcloudContainer">
                     <img src={`data:image/png;base64,${wordcloudImage}`} alt="Wordcloud" />
-                    <div className="word-counts">
+                    <div className="wordCounts">
                         <h4><strong>채용 인기 {selectedTab === 'skills' ? '기술스택' : '직무'} 순위</strong><img src='/images/Rankicon.png' alt='Rankicon' /></h4>
                         <ul>
                             {sortedWordCounts.map(([word, data]) => (
@@ -115,7 +115,7 @@ const JobRecommendationForm = () => {
                         </ul>
                     </div>
                 </div>
-                <div className="category-tabs">
+                <div className="categoryTabs">
                     {Object.keys(techStacks).map((category) => (
                         <button
                             key={category}
@@ -126,12 +126,12 @@ const JobRecommendationForm = () => {
                         </button>
                     ))}
                 </div>
-                <div className="recommendations-container">
+                <div className="recommendationsContainer">
                     <form onSubmit={handleSubmit}>
                         {Object.entries(techStacks).map(([category, skills]) => (
                             <div
                                 key={category}
-                                className={`recommendations-category ${selectedCategoryTab === category ? 'active' : 'hidden'}`}
+                                className={`recommendationsCategory ${selectedCategoryTab === category ? 'active' : 'hidden'}`}
                             >
                                 {skills.map((skill) => (
                                     <label key={skill}>
@@ -153,30 +153,31 @@ const JobRecommendationForm = () => {
                         ))}
                         <button type="submit">Get Recommendations</button>
                     </form>
-                    <div className="recommendations-wrap">
-                    <div className="recommendations-content">
-                        {recommendations.length === 0 ? (
-                            <div className="recommendations-placeholder">No recommendations yet. Please select skills and submit to get recommendations.</div>
-                        ) : (
-                            recommendations.map((rec, index) => (
-                                <div key={index} className="recommendations">
-                                    {rec}
-                                </div>
-                            ))
-                        )}
+                    <div className="recommendationsWrap">
+                        <div className="recommendationsTitle">Recommendations</div>
+                        <div className="recommendationsContent">
+                            {recommendations.length === 0 ? (
+                                <div className="recommendationsPlaceholder">No recommendations yet. Please select skills and submit to get recommendations.</div>
+                            ) : (
+                                recommendations.map((rec, index) => (
+                                    <div key={index} className="recommendations">
+                                        - {rec}
+                                    </div>
+                                ))
+                            )}
+                        </div>
                     </div>
-                </div>
                 </div>
             </div>
             {!isAuthenticated && (
-                <div className="login-overlay" >
-                    <div className="login-message">채용공고 데이터분석과 직업추천 서비스를 이용하려면 로그인이 필요합니다</div>
-                    <button className="login-button" onClick={openModal}>로그인</button>
+                <div className="loginOverlay" >
+                    <div className="loginMessage">채용공고 데이터분석과 직업추천 서비스를 이용하려면 로그인이 필요합니다</div>
+                    <button className="loginButton" onClick={openModal}>로그인</button>
                 </div>
             )}
             {modalOpen && (
-                <div className="modal-overlay2" onClick={closeModal}>
-                    <div className="modal-content2" onClick={(e) => e.stopPropagation()}>
+                <div className="modalOverlay2" onClick={closeModal}>
+                    <div className="modalContent2" onClick={(e) => e.stopPropagation()}>
                         <Login closeModal={closeModal} />
                     </div>
                 </div>
