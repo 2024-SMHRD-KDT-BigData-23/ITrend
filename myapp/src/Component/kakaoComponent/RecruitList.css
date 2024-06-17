@@ -15,7 +15,7 @@
     margin-top: 10px;
 }
 
-ul {
+.menuWrap ul {
     list-style-type: none;
     padding: 0px;
 }
@@ -75,5 +75,23 @@ ul {
 }
 
 .placeJob {
-    color: #888; /* 연한 색상 (예: 회색) */
+    color: #888;
+    /* 연한 색상 (예: 회색) */
 }
+
+/* ------------------------------------- 검색 후 기업의 정보 --------------------------------*/
+.item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 2s ease, background-color 2s ease;
+}
+
+.item:hover {
+    opacity: 0.5;
+    background-color: #a4b7d1;
+}
+
+/* ------------------------------------- End --------------------------------*/
