@@ -1,7 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Analysispage from './Analysispage';
-import PrivateRoute from './PrivateRoute';
 import Header from './Component/Header';
 import KakaoMap from './Component/KakaoMap';
 
@@ -14,11 +13,7 @@ function App() {
                     <Header />
                     <Routes>
                         <Route path="/" element={<KakaoMap />} />
-                        <Route path="/Analysispage" element={
-                            <PrivateRoute>
-                                <Analysispage />
-                            </PrivateRoute>
-                        } />
+                        <Route path="/Analysispage" element={<Analysispage />} />
                     </Routes>
                 </BrowserRouter>
             </div>
