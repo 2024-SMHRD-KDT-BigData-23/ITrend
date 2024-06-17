@@ -84,8 +84,8 @@ const Header = () => {
             </header>
 
             {modalOpen && (
-                <div className="modal-overlay2" onClick={closeModal}>
-                    <div className="modal-content2" onClick={(e) => e.stopPropagation()}>
+                <div className="modalOverlay2" onClick={closeModal}>
+                    <div className="modalContent2" onClick={(e) => e.stopPropagation()}>
                         <Login closeModal={closeModal} />
                     </div>
                 </div>
