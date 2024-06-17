@@ -1,0 +1,15 @@
+.section {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.section img {
+    width: 20px;
+    height: auto;
+}
+
+.section strong {
+    font-size: 20px;
+}
+

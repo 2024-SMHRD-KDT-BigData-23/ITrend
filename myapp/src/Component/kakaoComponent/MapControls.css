@@ -1,0 +1,25 @@
+.mapControls {
+    position: absolute;
+    width: 5%;
+    height: 100vh;
+    top: 0px;
+    right: 0px;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 20px;
+}
+
+.mapControls button {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: white;
+    margin-top: 10px;
+}
+
+.mapControls img {
+    width: 25px;
+    height: 25px;
+}

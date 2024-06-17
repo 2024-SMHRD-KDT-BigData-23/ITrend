@@ -1,0 +1,97 @@
+/* recruitList.css */
+
+.recruitList {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    margin-top: 10px;
+    border-top: 1px solid #A7E6FF;
+}
+
+.menuWrap {
+    max-height: 100vh;
+    overflow-y: auto;
+    background-color: white;
+    margin-top: 10px;
+}
+
+.menuWrap ul {
+    list-style-type: none;
+    padding: 0px;
+}
+
+
+.item .info {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.item .info div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.placeTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* 수평 중앙 정렬 */
+    width: 100%;
+}
+
+.placeTitle span {
+    width: 100%;
+    font-size: 24px;
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+.placeHeader {
+    display: flex;
+}
+
+.placeHeader>div {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.placeHeader>div:first-child {
+    flex: 0 0 60%;
+    width: 60%;
+    margin-right: 10px;
+}
+
+.markerBg {
+    text-decoration: underline;
+    text-decoration-skip-ink: none;
+    font-weight: bold;
+}
+
+.placeJob {
+    color: #888;
+    /* 연한 색상 (예: 회색) */
+}
+
+/* ------------------------------------- 검색 후 기업의 정보 --------------------------------*/
+.item {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: opacity 2s ease, background-color 2s ease;
+}
+
+.item:hover {
+    opacity: 0.5;
+    background-color: #a4b7d1;
+}
+
+/* ------------------------------------- End --------------------------------*/

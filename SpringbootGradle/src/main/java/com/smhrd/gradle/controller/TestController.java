@@ -49,6 +49,7 @@ public class TestController {
 	public ResponseEntity<List<Member>> getLoginData(@RequestBody Member member) {
 	    List<Member> result = memberMapper.findByUseridandpw(member.getUser_id(), member.getUser_pw());
 	    if (result != null) {
+	    	System.out.println("리절트안에 뭐들었다냐???" + result);
 	        return ResponseEntity.ok(result);
 	    } else {
 	        return ResponseEntity.status(401).body(null);

@@ -1,0 +1,268 @@
+@font-face {
+    font-family: 'S-CoreDream-3Light';
+    src: url('https://fastly.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+* {
+    font-family: 'S-CoreDream-3Light';
+}
+
+.analysisContainer {
+    width: 100%;
+    height: 100vh;
+    padding: 50px;
+    padding-left: 150px;
+    padding-right: 150px;
+    background-color: #edfbfc;
+    overflow-y: auto;
+    position: relative;
+}
+
+.blurred {
+    filter: blur(5px);
+    pointer-events: none;
+}
+
+.wordcloudContainer {
+    display: flex;
+    /* Flexbox 사용 */
+    align-items: center;
+    /* 세로 정렬 설정 (필요에 따라 조정 가능) */
+    background-color: #FFF;
+    padding: 2rem;
+}
+
+.wordcloudContainer img:first-child {
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+.wordCounts img {
+    width: 32px;
+    height: auto;
+    padding-bottom: 5px;
+}
+
+.wordCounts {
+    font-size: 1.2rem;
+    padding-left: 100px;
+    border-left: 3px solid #e0e0e0;
+}
+
+.wordCounts h4 {
+    padding-bottom: 50px;
+    padding-left: 38px;
+}
+
+.wordCounts ul {
+    margin-left: 20px;
+    padding: 0;
+    list-style-type: none;
+    /* 리스트 스타일 제거 */
+}
+
+.wordCounts li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    /* 리스트 아이템 아래 여백 설정 */
+    border-bottom: 1px solid #e0e0e0;
+    /* 연한 선 추가 */
+    padding-bottom: 7px;
+    /* 선과 아이템 사이 간격 설정 */
+    padding: 5px 0;
+    min-width: 320px;
+}
+
+.wordCounts li:last-child {
+    border-bottom: none;
+    /* 마지막 아이템에는 선을 제거 */
+}
+
+.wordCounts li span:last-child {
+    color: #36aad8;
+    padding-left: 10px;
+}
+
+.wordcloudTabs {
+    top: 0;
+}
+
+.analysisContainer button {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #7ab8ff;
+    /* 버튼의 배경색 */
+    color: #fff;
+    /* 텍스트 색상 */
+    font-size: 16px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    /* 그림자 효과 */
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-left: 1px;
+}
+
+.analysisContainer button:hover {
+    background-color: #357ebd;
+    /* 호버 상태에서의 배경색 */
+    transform: translateY(-2px);
+    /* 호버 시 약간 위로 이동하는 효과 */
+}
+
+.analysisContainer button.active {
+    background-color: #388bc4;
+    transform: translateY(-2px);
+    box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.recommendationsContainer {
+    display: flex;
+    /* Flexbox 사용 */
+    align-items: center;
+    /* 세로 정렬 설정 (필요에 따라 조정 가능) */
+}
+
+.recommendationsContainer form {
+    background-color: #FFF;
+    width: 50%;
+    height: 100%;
+    padding-top: 15px;
+    max-height: 370px;
+    border: 1px solid #ddd;
+}
+
+form div label {
+    width: calc(25% - 10px);
+    /* 체크박스 너비 설정 (2개씩 배치) */
+    margin-bottom: 1rem;
+    /* 체크박스 아래 여백 설정 */
+}
+
+.analysisContainer .recommendations {
+    background-color: #FFF;
+    margin-left: 50px;
+}
+
+.analysisContainer form button {
+    margin-left: 250px;
+    margin-bottom: 15px;
+    margin-top: 15px;
+}
+
+.recommendationsWrap {
+    background-color: #FFF;
+    width: 50%;
+    height: 100%;
+    min-height: 370px; /* 기존 form 크기에 맞춰서 설정 */
+    max-height: 370px; /* 기존 form 크기에 맞춰서 설정 */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    padding: 20px;
+    margin-left: 1px;
+    border: 1px solid #ddd;
+}
+
+.recommendationsTitle {
+    position: absolute;
+    top: 0;
+    left: 10px;
+    font-weight: 500;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.recommendationsContent {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 20px;
+    margin-top: 30px; /* 제목 아래에 컨텐츠를 배치하기 위해 여백 추가 */
+}
+
+.recommendationsPlaceholder,
+.recommendations {
+    margin-bottom: 10px;
+    margin-left: 80px;
+}
+
+.categoryTabs {
+    display: flex;
+    margin-top: 50px;
+}
+
+.categoryTabsButton {
+    padding: 10px 20px;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-bottom: none;
+    margin-right: 5px;
+    transition: background-color 0.3s;
+}
+
+.categoryTabsButton.active {
+    background-color: #fff;
+    border-bottom: 1px solid #fff;
+    font-weight: bold;
+}
+
+.recommendationsCategory {
+    display: none;
+    padding: 20px;
+    background-color: #fff;
+    overflow-y: scroll;
+    max-height: 280px;
+}
+
+.recommendationsCategory.active {
+    display: block;
+    overflow-y: scroll;
+    border-bottom: 2px solid #ebebeb;
+}
+
+.recommendationsCategory.active h3 {
+    display: none;
+}
+
+.loginOverlay {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid #e5e5e5;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    text-align: center;
+    pointer-events: auto; /* 클릭 이벤트 허용 */
+    filter: none; /* 블러 효과 제거 */
+}
+
+.loginMessage {
+    margin-bottom: 20px;
+}
+
+.loginButton {
+    padding: 10px 20px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.loginButton:hover {
+    background-color: #0056b3;
+}

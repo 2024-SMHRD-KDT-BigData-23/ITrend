@@ -1,0 +1,64 @@
+.kakaoMap {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.mapInfo {
+    position: relative;
+    background-color: white;
+    width: 400px;
+    height: 100%;
+    z-index: 10;
+}
+
+.mapInfo .searchBox {
+    height: 90px;
+    width: 100%;
+    position: relative;
+    background-color: white;
+    padding: 5px;
+}
+
+.mapInfo .searchInput {
+    width: 100%;
+    height: 60%;
+    border: 2px solid #A7E6FF;
+    display: flex;
+}
+
+.mapInfo .searchInput input {
+    border: none;
+    width: 85%;
+    height: 100%;
+    padding-left: 10px;
+}
+
+.mapInfo .searchInput button {
+    border: none;
+    border-left: 1px solid #A7E6FF;
+    background: none;
+    width: 15%;
+    height: 100%;
+}
+
+.mapInfo .searchInput .faMagnifyingGlass {
+    color: #A7E6FF;
+}
+
+/* 필터버튼의 css */
+
+.filterOptions {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 5px;
+}
+
+.filterOptions button {
+    background-color: #A7E6FF;
+    border: none;
+}
+
+.filterOptions .faSlidersIcon {
+    color: white;
+}

@@ -11,6 +11,8 @@ public class Recruit {
 
 	private String name;
 	
+	private String title;
+	
 	private String region;
 	
 	private String job;
@@ -36,4 +38,6 @@ public class Recruit {
 	private String latitude;
 	
 	private String longitude;
+	
+	private String url;
 }
