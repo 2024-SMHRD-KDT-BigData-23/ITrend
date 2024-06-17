@@ -53,31 +53,50 @@ const KakaoMap = () => {
     // key: 추출할 항목의 키 (예: 'skills' 또는 'job')
     // topN: 상위 몇 개의 항목을 추출할지 설정
     const extractTopItems = (markerInfos, key, topN) => {
-        // 중복된 항목을 제거하기 위해 Set을 사용
-        const itemSet = new Set();
+        // 각 항목의 등장 횟수를 저장할 객체
+        const itemCounts = {};
 
-        // 마커 정보 배열을 순회하며 key에 해당하는 값을 추출하여 Set에 추가
+        // 마커 정보 배열을 순회하며 key에 해당하는 값을 추출하고 등장 횟수를 계산
         markerInfos.forEach(info => {
             if (info[key]) {
-                info[key].split(', ').forEach(item => itemSet.add(item));
+                info[key].split(', ').forEach(item => {
+                    if (itemCounts[item]) {
+                        itemCounts[item]++;
+                    } else {
+                        itemCounts[item] = 1;
+                    }
+
+                    // "R"이라는 항목이 있는지 검사
+                    if (item === 'R') {
+                        console.log(`Found "R" in ${key} for marker:`, info);
+                    }
+                    
+                    if (item === 'Java') {
+                        console.log(`Found "Java" in ${key} for marker:`, info);
+                    }
+
+
+                });
             }
         });
 
-        // Set 객체를 배열로 변환
-        const itemArray = Array.from(itemSet);
+        // "R" 항목의 개수 출력
+        console.log(`Count of "R": ${itemCounts['R']}`);
+        console.log(`Count of "Java": ${itemCounts['Java']}`);
 
-        // 각 항목의 등장 횟수를 계산
-        const itemCount = itemArray.map(item => ({
+        // 각 항목과 그 등장 횟수를 배열 형태로 변환
+        const itemArray = Object.keys(itemCounts).map(item => ({
             item: item,
-            count: markerInfos.filter(info => info[key] && info[key].includes(item)).length
+            count: itemCounts[item]
         }));
 
         // 등장 횟수에 따라 내림차순으로 정렬
-        itemCount.sort((a, b) => b.count - a.count);
+        itemArray.sort((a, b) => b.count - a.count);
 
         // 상위 topN 개의 항목을 반환
-        return itemCount.slice(0, topN);
+        return itemArray.slice(0, topN);
     };
+
 
     // 클러스터 클릭 이벤트 핸들러
     const handleClusterClick = (cluster) => {
