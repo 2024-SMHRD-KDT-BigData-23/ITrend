@@ -134,6 +134,7 @@ button#headerAnalysis span {
   justify-content: center;
   align-items: center;
   z-index: 1000;
+  pointer-events: auto; /* 클릭 이벤트 허용 */
   /* 높은 z-index 값으로 다른 요소 위에 표시 */
 }
 
@@ -144,6 +145,7 @@ button#headerAnalysis span {
   width: 50%;
   max-width: 500px;
   min-height: 500px;
+  pointer-events: auto; /* 클릭 이벤트 허용 */
   /* display: flex; */
   /* flex-direction: column; */
   /* justify-content: space-between; */

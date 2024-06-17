@@ -1,32 +1,55 @@
 import React, { useState } from "react";
-// useLocation 현재의 경로를 알기위함
 import { useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faLocationDot, faChartSimple, faUser } from '@fortawesome/free-solid-svg-icons';
 import Login from './Login';
 import './Header.css';
+import { useCookies } from 'react-cookie';
+import Swal from 'sweetalert2';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const Header = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
+    const [cookies, setCookie, removeCookie] = useCookies(['user_id']);
+    const isAuthenticated = !!cookies['user_id']; // 쿠키가 있는지 확인하여 인증 상태 설정
 
     const openModal = () => {
-        setModalOpen(true);
+        if (isAuthenticated) {
+            Swal.fire({
+                title: '정말로 로그아웃하시겠습니까?',
+                text: "다시 되돌릴 수 없습니다. 신중하세요.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: '로그아웃',
+                cancelButtonText: '취소',
+                reverseButtons: true,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    removeCookie('user_id');
+                    Swal.fire(
+                        '로그아웃 되었습니다.',
+                        '성공적으로 로그아웃되었습니다.',
+                        'success'
+                    );
+                }
+            });
+        } else {
+            setModalOpen(true);
+        }
     };
 
     const closeModal = () => {
         setModalOpen(false);
     };
 
-    // 현재 경로가 특정 경로와 일치하는지 확인하여 활성 상태를 결정합니다.
-    // 경로가 일치하면 True
     const isActive = (path) => location.pathname === path;
 
     return (
         <div>
-
-
             <header id='header' className='mainHeader'>
                 <h1>
                     <a href='#'>
@@ -58,7 +81,6 @@ const Header = () => {
                         <FontAwesomeIcon icon={faUser} className='icon' />
                     </button>
                 </div>
-
             </header>
 
             {modalOpen && (
@@ -68,7 +90,6 @@ const Header = () => {
                     </div>
                 </div>
             )}
-
         </div>
     );
 }
