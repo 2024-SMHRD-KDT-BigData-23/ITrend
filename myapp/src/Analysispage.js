@@ -154,12 +154,18 @@ const JobRecommendationForm = () => {
                         <button type="submit">Get Recommendations</button>
                     </form>
                     <div className="recommendations-wrap">
-                        {recommendations.map((rec, index) => (
-                            <div key={index} className="recommendations">
-                                {rec}
-                            </div>
-                        ))}
+                    <div className="recommendations-content">
+                        {recommendations.length === 0 ? (
+                            <div className="recommendations-placeholder">No recommendations yet. Please select skills and submit to get recommendations.</div>
+                        ) : (
+                            recommendations.map((rec, index) => (
+                                <div key={index} className="recommendations">
+                                    {rec}
+                                </div>
+                            ))
+                        )}
                     </div>
+                </div>
                 </div>
             </div>
             {!isAuthenticated && (
