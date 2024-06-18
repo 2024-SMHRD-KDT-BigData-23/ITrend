@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useCookies } from 'react-cookie';
 import axios from 'axios';
 import "./Analysispage.css";
-import "./Component/Header.css";
-import Login from './Component/Login';  // Assuming you have a Login component
+import "./Header.css";
+import Login from './Login';  // Assuming you have a Login component
 
 const JobRecommendationForm = () => {
     const [categories, setCategories] = useState([]);
@@ -20,6 +20,12 @@ const JobRecommendationForm = () => {
         fetchWordcloud('skills');
         fetchWordcloudFrequency('skills');
     }, []);
+
+    const handleReset = () => {
+        setCategories([]);
+        setRecommendations([]);
+        document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => checkbox.checked = false);
+    };
 
     const fetchWordcloud = async (tab) => {
         try {
@@ -86,6 +92,7 @@ const JobRecommendationForm = () => {
         .sort(([, a], [, b]) => a.rank - b.rank)
         .slice(0, 10);
 
+
     const openModal = () => {
         setModalOpen(true);
     };
@@ -151,7 +158,11 @@ const JobRecommendationForm = () => {
                                 ))}
                             </div>
                         ))}
-                        <button type="submit">Get Recommendations</button>
+                        <div className="buttonContainer" style={{ display: "flex", justifyContent: "flex-end", padding: "0 10px" }}>
+                            <button id='submit' type="submit">Get Recommendations</button>
+
+                            <button id='reset' type="button" onClick={handleReset} >초기화</button>
+                        </div>
                     </form>
                     <div className="recommendationsWrap">
                         <div className="recommendationsTitle">Recommendations</div>
@@ -167,21 +178,23 @@ const JobRecommendationForm = () => {
                             )}
                         </div>
                     </div>
-                </div>
-            </div>
+                </div >
+            </div >
             {!isAuthenticated && (
                 <div className="loginOverlay" >
                     <div className="loginMessage">채용공고 데이터분석과 직업추천 서비스를 이용하려면 로그인이 필요합니다</div>
                     <button className="loginButton" onClick={openModal}>로그인</button>
                 </div>
             )}
-            {modalOpen && (
-                <div className="modalOverlay2" onClick={closeModal}>
-                    <div className="modalContent2" onClick={(e) => e.stopPropagation()}>
-                        <Login closeModal={closeModal} />
+            {
+                modalOpen && (
+                    <div className="modalOverlay2" onClick={closeModal}>
+                        <div className="modalContent2" onClick={(e) => e.stopPropagation()}>
+                            <Login closeModal={closeModal} />
+                        </div>
                     </div>
-                </div>
-            )}
+                )
+            }
         </>
     );
 };

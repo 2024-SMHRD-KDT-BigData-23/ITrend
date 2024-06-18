@@ -150,11 +150,23 @@ form div label {
     margin-left: 50px;
 }
 
-.analysisContainer form button {
-    margin-left: 250px;
+.analysisContainer form #submit {
     margin-bottom: 15px;
     margin-top: 15px;
 }
+
+.analysisContainer form #reset {
+    margin-bottom: 15px;
+    margin-top: 15px;
+    margin-left: 160px;
+}
+
+.analysisContainer .buttonContainer {
+    display:"flex"; 
+    justify-content:"flex-end"; 
+    padding:"0 10px";
+}
+
 
 .recommendationsWrap {
     background-color: #FFF;

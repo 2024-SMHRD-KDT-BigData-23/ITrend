@@ -20,17 +20,14 @@ const Login = ({ closeModal }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            console.log(credentials);
             const response = await axios.post('http://localhost:8080/api/login_process', credentials);
             const result = response.data;
-            console.log(result[0].user_id);
             if (result[0].user_id != null) {
                 Swal.fire({
                     title: '로그인이 성공했습니다.',
                     icon: 'success',
                     confirmButtonText: '확인'
                 }).then(() => {
-                    // 확인 버튼을 클릭 후 싥행할 로직
                     setCookie('user_id', result[0].user_id, { path: '/' });
                     closeModal();
                 });
@@ -57,7 +54,7 @@ const Login = ({ closeModal }) => {
             <div className='loginContainer'>
                 <div className='logoContainer'>
                     <img src='/images/ITLOGO.png' className='logoImage' alt="ITrend Logo"></img>
-                    <img src='/images/ITLOGO2.png'className='logoImage2' alt="Text Logo"></img>
+                    <img src='/images/ITLOGO2.png' className='logoImage2' alt="Text Logo"></img>
                 </div>
                 {!isSignUp ? (
                     <div className='formContainer'>
@@ -99,7 +96,7 @@ const Login = ({ closeModal }) => {
                         </div>
                     </div>
                 ) : (
-                    <SignUp closeModal={closeModal} closeSignUp={() => setIsSignUp(false)} />  // 회원가입 컴포넌트 렌더링
+                    <SignUp closeModal={closeModal} closeSignUp={() => setIsSignUp(false)} />
                 )}
             </div>
         </div>
