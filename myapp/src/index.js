@@ -1,11 +1,25 @@
+import './index.css'; 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App'; // 여기에 실제 경로를 사용하십시오
-import './index.css'; // 필요한 경우 다른 스타일 파일들을 import 합니다.
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import Analysispage from './Component/Analysispage';
+import Header from './Component/Header';
+import KakaoMap from './Component/KakaoMap';
 
 const rootElement = document.getElementById('root');
 const root = ReactDOM.createRoot(rootElement);
 
 root.render(
-        <App />
+        <div className="App">
+                <div style={{ display: "flex" }}>
+                        <BrowserRouter>
+                                <Header />
+                                <Routes>
+                                        <Route path="/" element={<KakaoMap />} />
+                                        <Route path="/Analysispage" element={<Analysispage />} />
+                                </Routes>
+                        </BrowserRouter>
+                </div>
+        </div>
 );
+

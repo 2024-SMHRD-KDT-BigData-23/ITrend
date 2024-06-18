@@ -1,9 +1,10 @@
+/* global kakao */
 import React from "react";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPlus, faMinus } from '@fortawesome/free-solid-svg-icons';
 import "./MapControls.css";
 
-const MapControls = ({ map }) => {
+const MapControls = ({ map, setRecruitInfo }) => {
     // 지도를 확대하는 함수
     const zoomIn = () => {
         // 현재 지도 레벨을 1단계 축소하여 지도를 확대
@@ -20,6 +21,8 @@ const MapControls = ({ map }) => {
     const resetMap = () => {
         // 지도의 레벨을 12로 설정하여 초기 상태로 되돌림
         map.setLevel(12);
+        map.setCenter(new kakao.maps.LatLng(36.5, 127.5));
+        setRecruitInfo(false);
     };
 
     return (
@@ -34,7 +37,7 @@ const MapControls = ({ map }) => {
             </button>
             {/* 지도 초기화 버튼 */}
             <button type='button' id="reset" onClick={resetMap}>
-                <img src="\images\reset.png"/>
+                <img src="\images\reset.png" alt="resetImage"/>
             </button>
 
         </div>

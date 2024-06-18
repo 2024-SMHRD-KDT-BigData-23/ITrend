@@ -5,8 +5,8 @@ const FilterModal = ({
     toggleCheckboxes,
     selectedOptions,
     handleCheckboxChange,
-    handleReset,
     RDcategoryFind,
+    setSelectedOptions
 }) => {
 
     const [currentOptions, setCurrentOptions] = useState({});
@@ -63,6 +63,11 @@ const FilterModal = ({
     const handleJobClick = () => {
         setCurrentOptions(jobOptions);
         setSelectedButton('job'); // 선택된 버튼 업데이트
+    };
+
+    // 필터의 초기화버튼 클릭시, 선택된 배열을 빈 배열로 만듦
+    const handleReset = () => {
+        setSelectedOptions([]);
     };
 
     return (

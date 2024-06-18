@@ -1,10 +1,17 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import './RecruitInfo.css';
 import RecruitInfoSection from './RecruitSection';
 import "./RecruitSection.css";
 
 const RecruitInfo = ({ selectedPlace, setRecruitInfo, setSelectedPlace }) => {
-    
+
+    useEffect(() => {
+        const recruitBody = document.querySelector('.recruitBody');
+        if (recruitBody) {
+            recruitBody.scrollTop = 0;
+        }
+    }, [selectedPlace]);
+
     const openUrl = (url) => {
         // URL이 http:// 또는 https://로 시작하지 않는 경우 http://를 추가
         if (!/^https?:\/\//i.test(url)) {
@@ -43,10 +50,10 @@ const RecruitInfo = ({ selectedPlace, setRecruitInfo, setSelectedPlace }) => {
                 <RecruitInfoSection iconSrc='/images/Check.png' title='지원절차' content={selectedPlace.job_process} />
                 <RecruitInfoSection iconSrc='/images/Check.png' title='상세주소' content={selectedPlace.address} />
                 <RecruitInfoSection iconSrc='/images/Check.png' title='공고마감날짜' content={selectedPlace.deadline_at} />
+            </div>
             <div className='recruitFoot'>
                 <button type='button' onClick={() => openUrl(selectedPlace.url)}>홈페이지 이동</button>
             </div>
-        </div>
         </div>
     );
 }

@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from 'react-router-dom';
 import './SignUp.css';
 
-function Signup({ closeSignUp, closeModal }) {
+function SignUp({ closeSignUp, closeModal }) {
     const [inputValues, setInputValues] = useState({
         user_id: '',
         user_pw: '',
@@ -15,7 +15,7 @@ function Signup({ closeSignUp, closeModal }) {
         user_loc: '',
         user_phone: ''
     });
-    const navigate = useNavigate(); // useNavigate 훅 사용
+    const navigate = useNavigate();
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
@@ -38,8 +38,7 @@ function Signup({ closeSignUp, closeModal }) {
                 icon: 'success',
                 confirmButtonText: '확인'
             }).then(() => {
-                // 확인 버튼을 클릭 후 싥행할 로직
-                navigate('/'); // 경로 변경
+                navigate('/');
                 closeModal();
             });
 
@@ -55,7 +54,7 @@ function Signup({ closeSignUp, closeModal }) {
     };
 
     return (
-        <div className='signUpContainer'>
+        <div className='signupContainer'>
             <form onSubmit={handleSubmit}>
                 <div className='inputGroup'>
                     <label htmlFor="user_id" className='labelContainer'>
@@ -117,15 +116,30 @@ function Signup({ closeSignUp, closeModal }) {
                     <label htmlFor="user_gender" className='labelContainer'>
                         <FontAwesomeIcon icon={faVenusMars} className='icon' />
                     </label>
-                    <input
-                        type="text"
-                        id="user_gender"
-                        name="user_gender"
-                        value={inputValues.user_gender}
-                        onChange={handleInputChange}
-                        placeholder='성별'
-                        className='inputField'
-                    />
+                    <div className='radioGroup'>
+                        <label>
+                            <input
+                                type="radio"
+                                id="user_gender_male"
+                                name="user_gender"
+                                value="male"
+                                checked={inputValues.user_gender === 'male'}
+                                onChange={handleInputChange}
+                            />
+                            남성
+                        </label>
+                        <label>
+                            <input
+                                type="radio"
+                                id="user_gender_female"
+                                name="user_gender"
+                                value="female"
+                                checked={inputValues.user_gender === 'female'}
+                                onChange={handleInputChange}
+                            />
+                            여성
+                        </label>
+                    </div>
                 </div>
                 <div className='inputGroup'>
                     <label htmlFor="user_loc" className='labelContainer'>
@@ -164,4 +178,4 @@ function Signup({ closeSignUp, closeModal }) {
     );
 }
 
-export default Signup;
+export default SignUp;
