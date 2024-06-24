@@ -1,4 +1,4 @@
-# ✔ 제 2의 원티드! ( ITREND )
+# ✔ 제 2의 원티드!! ( ITREND )
 ![ITREND-removebg-preview](https://github.com/2024-SMHRD-KDT-BigData-23/ITrend/assets/155136608/bcedf88b-528e-4ac8-8e07-48bc5064287a)
 ## 🔍 서비스 소개
 * 서비스명: 지역별 채용정보 맵 서비스
