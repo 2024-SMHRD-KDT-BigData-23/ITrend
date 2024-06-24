@@ -97,11 +97,11 @@
 ## 👨‍👩‍👦‍👦 팀원 역할
 <table>
   <tr>
-    <td align="center" width="20%"><img src="" height="200"/></td>
-    <td align="center" width="20%"><img src="" height="200"/></td>
-    <td align="center" width="20%"><img src="" height="200"/></td>
-    <td align="center" width="20%"><img src="" height="200"/></td>
-    <td align="center" width="20%"><img src="" height="200"/></td>
+    <td align="center" width="20%"><img src="https://github.com/2024-SMHRD-KDT-BigData-23/ITrend/assets/155136608/b118b318-ab92-4251-9366-66771873f816" height="200"/></td>
+    <td align="center" width="20%"><img src="https://i.namu.wiki/i/4b7hi0TTdKuXJqe6nErOp9ox3rpVOY1dv7YSBVQAUFln3KVJhkOhnNiyIRUt_Wjj03Nxl5ZxKfV9VB3Nr9J2Y1TooXGqs2ipeFC7MJJuUh-cirmSahlP8szgDS50LiV1u0sCl0Mtck5a9S4KSNO1sg.webp" height="200"/></td>
+    <td align="center" width="20%"><img src="https://i.namu.wiki/i/4b7hi0TTdKuXJqe6nErOp9ox3rpVOY1dv7YSBVQAUFln3KVJhkOhnNiyIRUt_Wjj03Nxl5ZxKfV9VB3Nr9J2Y1TooXGqs2ipeFC7MJJuUh-cirmSahlP8szgDS50LiV1u0sCl0Mtck5a9S4KSNO1sg.webp" height="200"/></td>
+    <td align="center" width="20%"><img src="https://i.namu.wiki/i/4b7hi0TTdKuXJqe6nErOp9ox3rpVOY1dv7YSBVQAUFln3KVJhkOhnNiyIRUt_Wjj03Nxl5ZxKfV9VB3Nr9J2Y1TooXGqs2ipeFC7MJJuUh-cirmSahlP8szgDS50LiV1u0sCl0Mtck5a9S4KSNO1sg.webp" height="200"/></td>
+    <td align="center" width="20%"><img src="https://i.namu.wiki/i/nsfc7PdyZBYiDQIxy0QEOzGtRxRs0zilhZOACMjZm_OrA6Ma4MbN7sD1a09vB0AAVzQ6aTgnhpS5zplMO1h57IJAEsOxbIE0USrG2trzpYKqMb4A2oToDqQlPlvG69ryF_YvtaGm-O52QwEj7carvQ.webp" height="200"/></td>
   </tr>
   
   <tr>
@@ -119,11 +119,11 @@
     <td align="center"><b>UI&UX<br> Back-end</b></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/swnoh7" target='_blank'>github</a></td>
-    <td align="center"><a href="https://github.com/0310xxxxx" target='_blank'>github</a></td>
-    <td align="center"><a href="https://github.com/oin1230" target='_blank'>github</a></td>
-    <td align="center"><a href="https://github.com/eee88" target='_blank'>github</a></td>
-    <td align="center"><a href="https://github.com/dongju12" target='_blank'>github</a></td>
+    <td align="center"><a href="https://github.com/swnoh7" target='_blank'>GitHub</a></td>
+    <td align="center"><a href="https://github.com/0310xxxxx" target='_blank'>GitHub</a></td>
+    <td align="center"><a href="https://github.com/oin1230" target='_blank'>GitHub</a></td>
+    <td align="center"><a href="https://github.com/eee88" target='_blank'>GitHub</a></td>
+    <td align="center"><a href="https://github.com/dongju12" target='_blank'>GitHub</a></td>
   </tr>
   <tr>
     <td align="center"> 
