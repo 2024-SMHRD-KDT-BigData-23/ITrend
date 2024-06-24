@@ -88,11 +88,13 @@
   </tr>
   <tr>
   </tr></table>
+<br>
 
 ## ⚙ ER-Diagram.....
 ![ITrendER다이어그램](https://github.com/2024-SMHRD-KDT-BigData-23/ITrend/assets/155136608/b3ce975c-f9fb-4132-b360-c82c3ac4a4d7)
+<br>
 
-## 팀원 역할
+## 👨‍👩‍👦‍👦 팀원 역할
 <table>
   <tr>
     <td align="center" width="20%"><img src="" height="200"/></td>
@@ -124,10 +126,50 @@
     <td align="center"><a href="https://github.com/dongju12" target='_blank'>github</a></td>
   </tr>
   <tr>
-    <td align="center"> <b> • 프로젝트&산출문서관리&발표 <br><br>  • EMR과 유사한 더미데이터 생성 기능 <br><br> • 환자 상세 정보 페이지 UI/UX <br><br> • 환자의 배치 결정 & 상태 기록 기능 <br><br> • MIMIC 데이터 전처리 및 LightGBM 모델링<br><br> • React Component Hook 관리<br><br> • React useParams를 이용한 SPA 구현<br><br> • React Promise 병렬 비동기 통신을 이용한 서버 데이터 불러오기</b> </td>
-    <td align="center"> <b> •화면 UI/UX 설계 & PPT 제작 Bootstrap을 사용해 전체 페이지 Design <br><br> • login & Header & In-ER & Ex-ER & Search 화면 구성 <br><br> • React axios 미동기 통신을 이용한 서버 데이터 불러오기 <br><br> • React useState를 이용한 상태관리 <br><br> • React useNavigate를 이용한 페이지 간 이동</b></td>
-    <td align="center"> <b>• 데이터베이스 요구 사항 분석 & 테이블 설계 & 시연 영상 제작 <br><br> • VIEW와 Spring Data JPA를 사용한 환자 기본 정보 & 상세 정보 조회 기능 & 환자 입원 구역과 NTAS 위험도 필터링 기능 & 환자 검색 기능<br><br> • Role UI/UX 및 사용자 계정 추가, 수정, 권한 관련 기능<br><br> • Log 목록 조회, 검색 기능</b></td>
-    <td align="center"><b> • 아키텍처 설계 <br><br> React 및 Spring Boot 개발 환경 구축 <br><br> • JWT를 이용한 로그인 & 로그아웃 & 사용자 권한 관리 <br><br> • 환자 목록 페이징 <br><br> • 더미 데이터에 AI모델을 추가하는 Flask 서버 구축 <br><br> • Admin 설계 및 UI/UX 최적화 <br><br> • 시스템 자원 사용률 & DB 백업 기능 <br><br> • Docker & Jenkis & AWS를 사용해서 자동 CI/CD 및 배포 환경 구축 </b></td>
+    <td align="center"> 
+      <b> 
+        • 프로젝트 총괄 <br>  
+        • 통합 개발환경 구축<br> 
+        • 검색기능 구현<br> 
+        • 분석페이지 CSS<br> 
+        • DB 설계 및 구축<br>
+        • 문서 작성<br>
+      </b>
+    </td>
+    <td align="center">
+      <b> 
+        • 로그인/훠왼가입 CSS><br>
+        • 레이아웃 설정<br> 
+        • Chart.js 구현<br> 
+      </b>
+    </td>
+    <td align="center">
+      <b>
+        • 지도페이지 레이아웃 설계<br>
+        • 지도페이지 필터검색 기능 구현<br>
+        • 카카오맵 API 클러스터러 구현<br> 
+        • 헤더페이지 구현<br> 
+        • 코드 리팩토링 담당<br>
+      </b>
+    </td>
+    <td align="center">
+      <b>
+        • 채용공고 데이터 크롤링 및 전처리<br>
+        • 자연어 처리 모델 구축(Bi-LSTM)<br> 
+        • 공고 데이터 시각화<br> 
+        • 직무추천 알고리즘 구현<br> 
+        • PPT 제작<br> 
+      </b>
+    </td>
+     <td align="center">
+      <b>
+        • 로그인/로그아웃/회원가입 구현<br>
+        • 쿠키를 통한 권한 관리<br> 
+        • 분석페이지 레이아웃<br> 
+        • UI&UX 총괄<br> 
+        • 카카오맵 API 구현<br> 
+      </b>
+    </td>
   </tr>
 </table>
 
