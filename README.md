@@ -124,7 +124,7 @@
     <td align="center"><a href="https://github.com/oin1230" target='_blank'>GitHub</a></td>
     <td align="center"><a href="https://github.com/dongju12" target='_blank'>GitHub</a></td>
     <td align="center"><a href="https://github.com/eee88" target='_blank'>GitHub</a></td>
-  </tr>https://github.com/dongju12
+  </tr>
   <tr>
     <td align="center"> 
       <b> 
